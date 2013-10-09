@@ -7,7 +7,7 @@ public class PlayerCamera : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		player = GameObject.Find("Zombie");
+		player = GameObject.Find("Zombie_Hat");
 	}
 	
 	// Update is called once per frame
