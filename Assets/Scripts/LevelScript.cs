@@ -1,15 +1,78 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelScript : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
+public class LevelScript : GeneralObject {
 	
+	/**
+	 * Singleton
+	*/
+	private static LevelScript instance;
+	public LevelScript(){
+		instance = this;
+	}
+	public static LevelScript Instance{get{return instance;}}
+	public static LevelScript I{get{return Instance;}}
+	
+	
+	
+	
+	public Object[] musterBloecke;
+	private Block[] gameBloecke = new Block[6];
+	
+	int current = 2;
+	
+	
+	
+	protected override void Start() {
+		base.Start();		
+		
+		for(int i=0; i<gameBloecke.Length; i++)
+			gameBloecke[i] = randomBlock( (float)((i-2)*25) );
 	}
 	
-	// Update is called once per frame
-	void Update () {
 	
+	
+	private Block randomBlock(float x){
+		
+		//einen zufälligen Musterblock auswählen
+		int r = rnd.Next(musterBloecke.Length);
+		Object pref = musterBloecke[r];
+		
+		//erstellen
+		GameObject newBlock = Instantiate(pref, new Vector3(x ,0.0f, 0.0f));
+		
+		//zurückgeben
+		return (Block)newBlock.GetComponent<Block>();
 	}
+	
+	
+	
+	private void nextBlock(){
+		current = (current + 1) % gameBloecke.Length;
+		int last = (current + 2) % gameBloecke.Length;
+		int replace = (current + 3) % gameBloecke.Length;
+		
+		Block oldBlock = gameBloecke[replace];
+		Block lastBlock = gameBloecke[last];
+		Block newBlock = randomBlock(lastBlock.Pos.x + lastBlock.Width);
+		
+		oldBlock.Remove();
+		
+		gameBloecke[replace] = newBlock;
+	}
+	
+	
+	
+	public override bool HandleMessage(Telegram msg){
+		switch(msg.message){
+			case "nextBlock":
+				nextBlock();
+				return true;
+			default:
+				return false;
+		}
+	}
+	
+	
+	
 }
