@@ -27,7 +27,7 @@ public class LevelScript : GeneralObject {
 		base.Start();		
 		
 		for(int i=0; i<gameBloecke.Length; i++)
-			gameBloecke[i] = randomBlock( (float)((i-2)*25) );
+			gameBloecke[i] = randomBlock( (float)((i-3)*25) );
 	}
 	
 	
@@ -54,7 +54,7 @@ public class LevelScript : GeneralObject {
 		
 		Block oldBlock = gameBloecke[replace];
 		Block lastBlock = gameBloecke[last];
-		Block newBlock = randomBlock(lastBlock.Pos.x + lastBlock.Width);
+		Block newBlock = randomBlock(lastBlock.Pos.x + lastBlock.Width/2.0f);
 		
 		oldBlock.Remove();
 		
