@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 public class Block : GeneralObject {
 	
+	
+	public Vector3[] spawnPoints;
+	
+	
 	public bool PlayerInside { get; private set;}
 	public bool PlayerLeaved { get; private set;}
 	
@@ -12,8 +16,12 @@ public class Block : GeneralObject {
 	
 	protected override void Start(){
 		base.Start();
+		
 		PlayerInside = false;
 		PlayerLeaved = false;
+		
+		foreach(Vector3 pos in spawnPoints)
+			Instantiate(LevelScript.I.zombies[0], transform.position+pos);
 	}
 	
 	

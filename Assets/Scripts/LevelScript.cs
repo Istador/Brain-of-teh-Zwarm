@@ -16,6 +16,11 @@ public class LevelScript : GeneralObject {
 	
 	
 	
+	public Object[] zombies;
+	public Object[] humans;
+	
+	
+	
 	public Object[] musterBloecke;
 	private Block[] gameBloecke = new Block[6];
 	
@@ -28,6 +33,7 @@ public class LevelScript : GeneralObject {
 		
 		for(int i=0; i<gameBloecke.Length; i++)
 			gameBloecke[i] = randomBlock( (float)((i-3)*25) );
+		
 	}
 	
 	
