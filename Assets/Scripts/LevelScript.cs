@@ -18,7 +18,9 @@ public class LevelScript : GeneralObject {
 	
 	public Object[] zombies;
 	public Object[] humans;
-	
+	private Object[] entities;
+	public Object RandomEntity{ get{return entities[rnd.Next(entities.Length)];} }
+		
 	
 	
 	public Object[] musterBloecke;
@@ -34,6 +36,10 @@ public class LevelScript : GeneralObject {
 		for(int i=0; i<gameBloecke.Length; i++)
 			gameBloecke[i] = randomBlock( (float)((i-3)*25) );
 		
+		entities = new Object[zombies.Length+humans.Length];
+		for(int i=0; i<entities.Length; i++) 
+			if(i < zombies.Length) entities[i] = zombies[i];
+			else entities[i] = humans[i-zombies.Length];
 	}
 	
 	

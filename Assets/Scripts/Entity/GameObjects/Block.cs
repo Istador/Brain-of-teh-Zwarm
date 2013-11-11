@@ -20,10 +20,32 @@ public class Block : GeneralObject {
 		PlayerInside = false;
 		PlayerLeaved = false;
 		
-		foreach(Vector3 pos in spawnPoints)
-			Instantiate(LevelScript.I.zombies[0], transform.position+pos);
+		//maximale Anzahl Mobs die gespawnt werden können
+		int maxMobs = System.Convert.ToInt32(System.Math.Sqrt((double)spawnPoints.Length));
+		int spawnN = rnd.Next(maxMobs+1);
+		Debug.Log("Spawn "+spawnN+" of max "+maxMobs);
+		for(;spawnN>0; spawnN--)
+			Instantiate(LevelScript.I.RandomEntity, RandomSpawnPoint);
+		
 	}
 	
+	
+	private HashSet<int> spawned = new HashSet<int>();
+	private Vector3 RandomSpawnPoint{get{
+			if(spawned.Count >= spawnPoints.Length){
+				Debug.LogError("No free SpawnPoints");
+				return Vector3.zero;
+			} else {
+				int index = -1;
+				do{
+					index = rnd.Next(spawnPoints.Length);
+					if(spawned.Contains(index)) index=-1;
+					else spawned.Add(index);
+				}
+				while(index == -1);
+				return transform.position + spawnPoints[index];
+			}
+		}}
 	
 	
 	void OnTriggerEnter(Collider other) {
