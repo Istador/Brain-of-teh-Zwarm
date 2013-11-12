@@ -25,7 +25,14 @@ public class SteeringBehaviors<T> {
 	/// <summary>
 	/// Ziel das für einige Behaviors benötigt wird
 	/// </summary>
-	public MovableEntity<T> Target {get; set;}
+	public MovableEntity<Entity> Target {get; set;}
+	
+	
+	
+	/// <summary>
+	/// Offset vom Ziel das fOffset Pursuit benötigt wird
+	/// </summary>
+	public Vector3 Offset {get; set;}
 	
 	
 	
@@ -137,7 +144,7 @@ public class SteeringBehaviors<T> {
 	/// <param name='evader'>
 	/// Objekt das abgefangen werden soll
 	/// </param>
-	private Vector3 Pursuit(MovableEntity<T> target){
+	private Vector3 Pursuit(MovableEntity<Entity> target){
 		Vector3 toEvader = target.Pos - owner.Pos;
 		
 		/*
@@ -162,10 +169,29 @@ public class SteeringBehaviors<T> {
 	/// <param name='evader'>
 	/// Der Verfolger dem man asuweichen will
 	/// </param>
-	private Vector3 Evade(MovableEntity<T> target){
+	private Vector3 Evade(MovableEntity<Entity> target){
 		Vector3 toPersuer = target.Pos - owner.Pos;
 		float LAT = toPersuer.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
 		return Flee(target.Pos + target.rigidbody.velocity * LAT);
+	}
+	
+	
+	
+	
+	/// <summary>
+	/// Folgen eines Targets mit Offset
+	/// </summary>
+	/// <param name='evader'>
+	/// Objekt das abgefangen werden soll
+	/// </param>
+	private Vector3 OffsetPursuit(MovableEntity<Entity> target, Vector3 offset){
+		Vector3 WorldOffset = target.Pos + offset;
+		
+		Vector3 ToOffset = WorldOffset - owner.Pos;
+		
+		
+		float LAT = ToOffset.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
+		return Seek(WorldOffset + target.rigidbody.velocity * LAT);
 	}
 	
 	
@@ -202,6 +228,16 @@ public class SteeringBehaviors<T> {
 	/// </param>
 	public bool Evading {get; set;}
 	
+	/// <summary>
+	/// Offset Pursuit ein-/ausschalten
+	/// </summary>
+	/// <param name='on'>
+	/// true=ein, false=aus
+	/// </param>
+	public bool OffsetPursuing {get; set;}
+	
+	
+	
 	
 	
 	/// <summary>
@@ -229,6 +265,7 @@ public class SteeringBehaviors<T> {
 		if(Fleeing) f += Flee(TargetPos);
 		if(Pursuing && Target != null) f+= Pursuit(Target);
 		if(Evading && Target != null) f+= Evade(Target);
+		if(OffsetPursuing && Target != null && Offset != Vector3.zero) f += OffsetPursuit(Target, Offset);
 		
 		//truncat
 		if(f != Vector3.zero && Mathf.Abs(f.magnitude) > owner.MaxForce)
