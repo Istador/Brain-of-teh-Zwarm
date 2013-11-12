@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class Block : GeneralObject {
 	
+	private static Transform entityParent;
 	
 	public Vector3[] spawnPoints;
 	
@@ -17,6 +18,9 @@ public class Block : GeneralObject {
 	protected override void Start(){
 		base.Start();
 		
+		if(entityParent == null)
+			entityParent = GameObject.Find("Entities").transform;
+		
 		PlayerInside = false;
 		PlayerLeaved = false;
 		
@@ -24,13 +28,17 @@ public class Block : GeneralObject {
 		int maxMobs = System.Convert.ToInt32(System.Math.Sqrt((double)spawnPoints.Length));
 		int spawnN = rnd.Next(maxMobs+1);
 		Debug.Log("Spawn "+spawnN+" of max "+maxMobs);
-		for(;spawnN>0; spawnN--)
-			Instantiate(LevelScript.I.RandomEntity, RandomSpawnPoint);
+		for(;spawnN>0; spawnN--){
+			GameObject o = Instantiate(LevelScript.I.RandomEntity, RandomSpawnPoint);
+			o.transform.parent = entityParent;
+		}
 		
 	}
 	
 	
 	private HashSet<int> spawned = new HashSet<int>();
+	
+	// gib einen zufälligen Spawnpunkt aus
 	private Vector3 RandomSpawnPoint{get{
 			if(spawned.Count >= spawnPoints.Length){
 				Debug.LogError("No free SpawnPoints");

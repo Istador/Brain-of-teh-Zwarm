@@ -55,6 +55,8 @@ public static class Resource {
 	
 	public static IRes<Object> Prefab = new Res<Object>("Prefabs/");
 	
+	public static IRes<Texture2D> Texture = new Res<Texture2D>("Textures/");
+	
 	public static IRes<Material> Materials = new Res<Material>("Materials/");
 	
 	//Materialien in einem Array-Format um sie schnell auszuwechseln

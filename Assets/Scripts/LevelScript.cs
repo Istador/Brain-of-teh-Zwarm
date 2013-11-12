@@ -18,8 +18,11 @@ public class LevelScript : GeneralObject {
 	
 	public Object[] zombies;
 	public Object[] humans;
-	private Object[] entities;
-	public Object RandomEntity{ get{return entities[rnd.Next(entities.Length)];} }
+	public Object RandomEntity{ get{
+		int i = rnd.Next(zombies.Length + humans.Length);
+		if(i < zombies.Length) return zombies[i];
+		return humans[i - zombies.Length];
+	} }
 		
 	
 	
@@ -33,13 +36,9 @@ public class LevelScript : GeneralObject {
 	protected override void Start() {
 		base.Start();		
 		
+		//alle Bloecke erstellen
 		for(int i=0; i<gameBloecke.Length; i++)
 			gameBloecke[i] = randomBlock( (float)((i-3)*25) );
-		
-		entities = new Object[zombies.Length+humans.Length];
-		for(int i=0; i<entities.Length; i++) 
-			if(i < zombies.Length) entities[i] = zombies[i];
-			else entities[i] = humans[i-zombies.Length];
 	}
 	
 	
@@ -52,6 +51,9 @@ public class LevelScript : GeneralObject {
 		
 		//erstellen
 		GameObject newBlock = Instantiate(pref, new Vector3(x ,0.0f, 0.0f));
+		
+		//in der Hierarchie unter diesem einordnen, statt global
+		newBlock.transform.parent = transform;
 		
 		//zurückgeben
 		return (Block)newBlock.GetComponent<Block>();
