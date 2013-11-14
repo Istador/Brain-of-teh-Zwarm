@@ -9,7 +9,7 @@ public class PlayerGUI : MonoBehaviour {
 	
 	
 	
-	public PlayerGUI(){
+	void Start(){
 		size_title = 0.2f;
 		g_title = GString.GetString(" Brainz");
 		pos_title = new Vector2(
@@ -21,7 +21,7 @@ public class PlayerGUI : MonoBehaviour {
 		PlayerObject p = PlayerObject.I;
 		
 		//Player existiert
-		if(p != null){
+		if(p != null && g_title != null){
 			//Anzahl gefundener Gehirne
 			Glyph g = GString.GetString(p.Brains.ToString());
 			Vector2 pos = new Vector2(pos_title.x - g.Width(size_title), pos_title.y);
