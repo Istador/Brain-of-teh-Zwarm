@@ -7,27 +7,28 @@ public class PlayerObject : MovableEntity<Entity> {
 	
 	public PlayerObject() : base(150) {
 		instance = this;
-		Brains = 1337;
+		Brains = 0;
 	}
 	
 	protected override void FixedUpdate () {
 		base.FixedUpdate();
 		
-		float hor = Input.GetAxis("Horizontal");
+		float hor = 1.0f; //Input.GetAxis("Horizontal");
 		float ver = Input.GetAxis("Vertical");
 		
-		rigidbody.AddRelativeForce(new Vector3(0.0f, 0.0f, 1.0f) * ver * 10.0f, ForceMode.Impulse);
-		rigidbody.AddRelativeForce(new Vector3(1.0f, 0.0f, 0.0f) * hor * 10.0f, ForceMode.Impulse);
-		Brains = 1337 + ((int)transform.position.x / 10);
+		Vector3 x = new Vector3(hor, 0.0f, ver).normalized;
+		rigidbody.AddRelativeForce(x * 8.5f, ForceMode.Impulse);
+		
+		Brains = 0 + ((int)transform.position.x / 10);
 	}
 	
 	
 	
 	public readonly Vector3[] Offsets = new Vector3[]{
-		new Vector3(1.0f, 0.98f, 1.0f),
-		new Vector3(-1.0f, 0.98f, 1.0f),
-		new Vector3(1.0f, 0.98f, -1.0f),
-		new Vector3(-1.0f, 0.98f, -1.0f),
+		new Vector3(1.5f, 0.0f, 1.5f),
+		new Vector3(-1.5f, 0.0f, 1.5f),
+		new Vector3(1.5f, 0.0f, -1.5f),
+		new Vector3(-1.5f, 0.0f, -1.5f),
 	};
 	
 	public Zombie[] Zombies = new Zombie[4];
@@ -39,6 +40,15 @@ public class PlayerObject : MovableEntity<Entity> {
 			Zombies[i] = Instantiate("Zombie_Normal", Pos + Offsets[i]).GetComponent<Zombie>();
 			Zombies[i].Follow(this, Offsets[i]);
 		}
+	}
+	
+	
+	public override void Death(){
+		base.Death();
+		
+		//Spiel neu starten
+		MessageDispatcher.I.EmptyQueue();
+		Application.LoadLevel(Application.loadedLevel);
 	}
 	
 	

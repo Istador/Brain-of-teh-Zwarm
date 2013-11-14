@@ -69,7 +69,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// <summary>
 	/// Zufallsgenerator des Systems für int und double
 	/// </summary>
-	public static readonly System.Random rnd = new System.Random();
+	public static System.Random rnd { get{ return Utility.Rnd;}}
 	
 	
 	
@@ -362,7 +362,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Ob die Position rechts von diesem Objekt ist.
 	/// </summary>
 	public bool IsRight(Vector3 pos){
-		return Vector3.Dot((pos - Pos), Vector3.right) > 0.0f;
+		return Vector3.Dot((pos - Pos), Vector3.right) >= 0.0f;
 	}
 	/// <summary>
 	/// Ob ein anderes Objekt rechts von diesem Objekt ist.
@@ -395,31 +395,31 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Ob die Position links von diesem Objekt ist.
 	/// </summary>
 	public bool IsLeft(Vector3 pos){
-		return ! IsRight(pos);
+		return Vector3.Dot((pos - Pos), Vector3.left) >= 0.0f;
 	}
 	/// <summary>
 	/// Ob ein anderes Objekt rechts von diesem Objekt ist.
 	/// </summary>
 	public bool IsLeft(GameObject obj){
-		return ! IsRight(obj);
+		return IsLeft(obj.collider.bounds.center);
 	}
 	/// <summary>
 	/// Ob ein anderes Objekt links von diesem Objekt ist.
 	/// </summary>
 	public bool IsLeft(Collider obj){
-		return ! IsRight(obj);
+		return IsLeft(obj.gameObject);
 	}
 	/// <summary>
 	/// Ob ein anderes Objekt links von diesem Objekt ist.
 	/// </summary>
 	public bool IsLeft(Collision obj){
-		return ! IsRight(obj);
+		return IsLeft(obj.gameObject);
 	}
 	/// <summary>
 	/// Ob ein anderes Objekt rechts von diesem Objekt ist.
 	/// </summary>
 	public bool IsLeft(GeneralObject obj){
-		return ! IsRight(obj);
+		return IsLeft(obj.Pos);
 	}
 	
 	// Oben

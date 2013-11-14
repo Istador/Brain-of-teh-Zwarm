@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class LevelScript : GeneralObject {
 	
@@ -35,6 +35,17 @@ public class LevelScript : GeneralObject {
 	
 	protected override void Start() {
 		base.Start();		
+		
+		//vorhandene Blöcke ermitteln
+		List<Transform> vorhanden = new List<Transform>();
+		for(int i=0; i<transform.childCount; i++)
+			vorhanden.Add(transform.GetChild(i));
+		
+		//vorhandene Blöcke entfernen
+		foreach(Transform t in vorhanden){
+			t.gameObject.SetActive(false);
+			Destroy(t.gameObject);
+		}
 		
 		//alle Bloecke erstellen
 		for(int i=0; i<gameBloecke.Length; i++)

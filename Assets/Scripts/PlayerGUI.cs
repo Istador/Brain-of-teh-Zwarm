@@ -7,7 +7,9 @@ public class PlayerGUI : MonoBehaviour {
 	Vector2 pos_title;
 	float size_title;
 	
-	void Start(){
+	
+	
+	public PlayerGUI(){
 		size_title = 0.2f;
 		g_title = GString.GetString(" Brainz");
 		pos_title = new Vector2(

@@ -87,7 +87,7 @@ public class Block : GeneralObject {
 	//Entfernt diesen Block und alle Objekte in ihm
 	public void Remove(){
 		//entferne Objekte die sich im Block befinden
-		foreach(GameObject o in inside){
+		foreach(GameObject o in inside) if(o != null) {
 			o.SetActive(false);
 			Destroy(o);
 		}

@@ -95,10 +95,13 @@ public abstract class Entity : GeneralObject {
 		//nichts tun, bei unserblichkeit
 		if(Invincible) return;
 		
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+damage.magnitude+" dmg received");
+		//Runde float zum nächsten int
+		int dmg = System.Convert.ToInt32(damage.magnitude);
+		
+		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		
 		//Trefferpunkte verringern
-		Health -= (int)damage.magnitude;
+		Health -= dmg;
 		
 		//Wenn Trefferpunkte auf 0 fallen, Sterben
 		if(Health <= 0) Death();

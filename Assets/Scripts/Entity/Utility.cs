@@ -10,6 +10,54 @@ public static class Utility {
 	
 	
 	/// <summary>
+	/// Gibt eine zufällige Zufallszahl mit spezifizierten Intervallgrenzen zurück.
+	/// </summary>
+	/// <returns>
+	/// Eine Zufallszahl im Wertebereich min <= x < max
+	/// </returns>
+	/// <param name='min'>
+	/// Minimum inklusive
+	/// </param>
+	/// <param name='max'>
+	/// Maximum exklusive
+	/// </param>
+	public static double NextDouble(double min, double max){
+		return Rnd.NextDouble() * (max - min) + min;
+	}
+	
+	
+	
+	/// <summary>
+	/// Gibt eine zufällige Zufallszahl mit spezifizierten Intervallgrenzen zurück.
+	/// </summary>
+	/// <returns>
+	/// Eine Zufallszahl im Wertebereich min <= x < max
+	/// </returns>
+	/// <param name='min'>
+	/// Minimum inklusive
+	/// </param>
+	/// <param name='max'>
+	/// Maximum exklusive
+	/// </param>
+	public static float NextFloat(float min, float max){
+		return NextFloat() * (max - min) + min;
+	}
+	
+	
+	
+	/// <summary>
+	/// Gibt eine zufällige Zufallszahl urück.
+	/// </summary>
+	/// <returns>
+	/// Eine Zufallszahl im Wertebereich 0.0 <= x < 1.0
+	/// </returns>
+	public static float NextFloat(){
+		return (float)Rnd.NextDouble();
+	}
+	
+	
+	
+	/// <summary>
 	/// Zeichnet ein farbiges Rechteck auf die GUI
 	/// </summary>
 	/// <param name='position'>

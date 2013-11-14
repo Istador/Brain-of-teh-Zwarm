@@ -139,6 +139,34 @@ public class SteeringBehaviors<T> {
 	
 	
 	/// <summary>
+	/// Interne Methode.
+	/// vorsichtiges Anstreben der Zielkoordinaten mit passender Geschwindigkeit
+	/// </summary>
+	/// <param name='targetPos'>
+	/// Zielkoordinaten
+	/// </param>
+	private Vector3 Arrive(Vector3 targetPos){
+		Vector3 ToTarget = targetPos - owner.Pos;
+		
+		float dist = ToTarget.magnitude;
+		
+		if(dist > 0){
+			float speed = dist / f_ArriveDeceleration;
+			
+			Utility.MinMax(ref speed, 0.0f, owner.MaxForce);
+			
+			Vector3 DesiredVelocity = ToTarget * speed / dist;
+			
+			return DesiredVelocity - owner.rigidbody.velocity;
+		}
+		
+		return Vector3.zero;
+	}
+	
+	private static float f_ArriveDeceleration = 0.1f;
+	
+	
+	/// <summary>
 	/// Abfangen eines Objektes anhand dessen vorraussichtlich zukünftigen Position.
 	/// </summary>
 	/// <param name='evader'>
@@ -176,6 +204,32 @@ public class SteeringBehaviors<T> {
 	}
 	
 	
+	/// <summary>
+	/// Entität wandert zufällig durch den Raum umher
+	/// </summary>
+	private Vector3 Wander(){
+		
+		//Step 3.5 A) Adding a small random displacement to the target.
+		float f1 = Utility.NextFloat(-1.0f, 1.0f);
+		float f2 = Utility.NextFloat(-1.0f, 1.0f);
+		v_WanderTarget += new Vector3(f1 * f_WanderJitter, 0.0f, f2 * f_WanderJitter);
+		
+		//Step 3.5 B) Re-Projecting the target back onto the wander circle.
+		v_WanderTarget = v_WanderTarget.normalized * f_WanderRadius;
+		
+		//Step 3.5 C) Projecting the target in front of the vehicle
+		Vector3 head = owner.rigidbody.velocity.normalized;
+		if(head == Vector3.zero) head = new Vector3(1.0f, 0.0f, 0.0f);
+		Vector3 targetLocal = head * f_WanderDistance + v_WanderTarget;
+		
+		return Seek(targetLocal + owner.Pos);
+	}
+	private static float f_WanderRadius = 4.0f;
+	private static float f_WanderDistance = 5.0f;
+	private static float f_WanderJitter = 0.4f;
+	private Vector3 v_WanderTarget = new Vector3(f_WanderRadius, 0.0f, 0.0f);
+	
+	
 	
 	
 	/// <summary>
@@ -189,9 +243,8 @@ public class SteeringBehaviors<T> {
 		
 		Vector3 ToOffset = WorldOffset - owner.Pos;
 		
-		
 		float LAT = ToOffset.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
-		return Seek(WorldOffset + target.rigidbody.velocity * LAT);
+		return Arrive(WorldOffset + target.rigidbody.velocity * LAT);
 	}
 	
 	
@@ -213,6 +266,14 @@ public class SteeringBehaviors<T> {
 	public bool Fleeing {get; set;}
 	
 	/// <summary>
+	/// vorsichtiges Anstreben ein-/ausschalten
+	/// </summary>
+	/// <param name='on'>
+	/// true=ein, false=aus
+	/// </param>
+	public bool Arriving {get; set;}
+	
+	/// <summary>
 	/// Abfangen ein-/ausschalten
 	/// </summary>
 	/// <param name='on'>
@@ -227,6 +288,14 @@ public class SteeringBehaviors<T> {
 	/// true=ein, false=aus
 	/// </param>
 	public bool Evading {get; set;}
+	
+	/// <summary>
+	/// Umherwandern ein-/ausschalten
+	/// </summary>
+	/// <param name='on'>
+	/// true=ein, false=aus
+	/// </param>
+	public bool Wandering {get; set;}
 	
 	/// <summary>
 	/// Offset Pursuit ein-/ausschalten
@@ -246,8 +315,11 @@ public class SteeringBehaviors<T> {
 	public void Stop(){
 		Seeking = false;
 		Fleeing = false;
+		Arriving = false;
 		Pursuing = false;
 		Evading = false;
+		Wandering = false;
+		OffsetPursuing = false;
 	}
 	
 	
@@ -263,10 +335,13 @@ public class SteeringBehaviors<T> {
 		
 		if(Seeking) f += Seek(TargetPos);
 		if(Fleeing) f += Flee(TargetPos);
-		if(Pursuing && Target != null) f+= Pursuit(Target);
-		if(Evading && Target != null) f+= Evade(Target);
-		if(OffsetPursuing && Target != null && Offset != Vector3.zero) f += OffsetPursuit(Target, Offset);
-		
+		if(Arriving) f += Arrive(TargetPos);
+		if(Pursuing && Target != null) f += Pursuit(Target);
+		if(Evading && Target != null) f += Evade(Target);
+		if(Wandering) f += Wander();
+		if(OffsetPursuing && Target != null && Offset != Vector3.zero) 
+			f += OffsetPursuit(Target, Offset);
+				
 		//truncat
 		if(f != Vector3.zero && Mathf.Abs(f.magnitude) > owner.MaxForce)
 			f = f.normalized * owner.MaxForce;

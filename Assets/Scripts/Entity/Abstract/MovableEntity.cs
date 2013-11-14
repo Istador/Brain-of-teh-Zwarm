@@ -158,7 +158,7 @@ public abstract class MovableEntity<T> : Entity {
 			
 			//Kraft auf die Unity-Physik-Engine übertragen, um Bewegung zu erzeugen
 			//rigidbody.AddRelativeForce(f); //nicht für Projektile
-			rigidbody.AddForce(f);
+			rigidbody.AddForce(f, ForceMode.Impulse);
 				
 			//Bewegungsgeschwindigkeit limitieren
 			if(Mathf.Abs(rigidbody.velocity.magnitude) > MaxSpeed)

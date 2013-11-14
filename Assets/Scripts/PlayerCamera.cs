@@ -3,17 +3,12 @@ using System.Collections;
 
 public class PlayerCamera : MonoBehaviour {
 	
-	GameObject player;
-	
-	// Use this for initialization
-	void Start () {
-		player = GameObject.Find("Zombie_Hat");
-	}
-	
 	// Update is called once per frame
 	void Update () {
-		Vector3 pos = transform.position;
-		pos.x = player.transform.position.x;
-		this.transform.position = pos;
+		if(PlayerObject.I != null && PlayerObject.I.Health > 0){
+			Vector3 pos = transform.position;
+			pos.x = PlayerObject.I.transform.position.x;
+			this.transform.position = pos;
+		}
 	}
 }
