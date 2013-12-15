@@ -9,13 +9,16 @@ public class PlayerGUI : MonoBehaviour {
 
 	Glyph g_bl;
 	Vector2 pos_bl;
-	float size_bl = 0.2f;
+	float size_bl = 0.5f;
 	
 	void Start(){
 
-		Glyph g_int = new GInteger(() =>  2 );
-		Glyph g_brainz = GString.GetString(" Brainz");
-		Glyph g_hp = new GHealthBar(150*5, 40*5, ()=>PlayerObject.I);
+		Glyph g_int = new GInteger(() => {
+			if(PlayerObject.I == null) return null;
+			else return PlayerObject.I.Brains;
+		});
+		Glyph g_brainz = GString.GetString(" Brainz ");
+		Glyph g_hp = new GHealthBar(150, 40, 3, ()=>PlayerObject.I);
 
 		g_bl = GString.Concat(g_int, g_brainz, g_hp);
 	}
@@ -40,7 +43,7 @@ public class PlayerGUI : MonoBehaviour {
 	void OnGUI(){
 		Resize();
 		//"x Brainz"
-		g_bl.Draw(size_bl, pos_bl);
+		g_bl.Draw(size_bl * s, pos_bl);
 	}
 	
 }

@@ -12,12 +12,14 @@ public class PlayerObject : MovableEntity<Entity> {
 
 
 	protected override void FixedUpdate () {
-		float hor = 1.0f; //Input.GetAxis("Horizontal");
 		float ver = Input.GetAxis("Vertical");
-		Vector3 x = new Vector3(hor, 0.0f, ver).normalized * MaxSpeed;
+		Vector3 x = new Vector3(0f, 0f, ver) * MaxSpeed;
 		Steering.TargetPos = Pos + x;
 
 		base.FixedUpdate();
+
+		//konstante Bewegung nach rechts
+		rigidbody.AddForce(new Vector3(MaxSpeed, 0f, 0f), ForceMode.Impulse);
 	}
 	
 	
