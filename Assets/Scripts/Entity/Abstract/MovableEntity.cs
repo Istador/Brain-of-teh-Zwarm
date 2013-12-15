@@ -71,14 +71,14 @@ public abstract class MovableEntity<T> : Entity {
 	/// <summary>
 	/// maximale Geschwindigkeit
 	/// </summary>
-	public float MaxSpeed { get; protected set; }
+	public float MaxSpeed { get; set; }
 	
 	
 	
 	/// <summary>
 	/// maximale Kraft der Steering Behaviors
 	/// </summary>
-	public float MaxForce { get; protected set; }
+	public float MaxForce { get; set; }
 	
 	
 	

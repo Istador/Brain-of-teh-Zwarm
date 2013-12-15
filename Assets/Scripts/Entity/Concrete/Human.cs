@@ -2,12 +2,19 @@
 using System.Collections;
 
 public class Human : MovableEntity<Human> {
-	
+
+	public static float f_slowSpeed = 2.25f;
+	public static float f_normalSpeed = 2.5f;
+	public static float f_runSpeed = 3.25f;
+
+	public static float f_runningTime = 4.0f; // 4 Sekunden rennen, dann erschöpft
 	
 	public Human() : base(100) {
-		MaxSpeed = 10.0f;
-		MaxForce = 10.0f;		
-		Steering.Wandering = true;
+		//Zustandsautomaten initialisieren
+		MoveFSM.CurrentState = SHumanWander.I;
+
+		MaxSpeed = f_normalSpeed;
+		MaxForce = f_normalSpeed;
 	}
 	
 	
@@ -40,7 +47,13 @@ public class Human : MovableEntity<Human> {
 		
 		sprite.mainTextureScale = tmp;
 	}
-	
+
+
+	//fliehe vor Zombie
+	public void Flee(MovableEntity<Entity> zombie){
+		Steering.Target = zombie;
+		MessageDispatcher.I.Dispatch(this, "flee");
+	}
 	
 	
 }

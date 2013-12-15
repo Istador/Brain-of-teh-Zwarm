@@ -9,17 +9,15 @@ public class PlayerObject : MovableEntity<Entity> {
 		instance = this;
 		Brains = 0;
 	}
-	
+
+
 	protected override void FixedUpdate () {
-		base.FixedUpdate();
-		
 		float hor = 1.0f; //Input.GetAxis("Horizontal");
 		float ver = Input.GetAxis("Vertical");
-		
-		Vector3 x = new Vector3(hor, 0.0f, ver).normalized;
-		rigidbody.AddRelativeForce(x * 8.5f, ForceMode.Impulse);
-		
-		Brains = 0 + ((int)transform.position.x / 10);
+		Vector3 x = new Vector3(hor, 0.0f, ver).normalized * MaxSpeed;
+		Steering.TargetPos = Pos + x;
+
+		base.FixedUpdate();
 	}
 	
 	
@@ -35,13 +33,42 @@ public class PlayerObject : MovableEntity<Entity> {
 		
 	protected override void Start(){
 		base.Start();
-		
-		for(int i = 0; i < Zombies.Length; i++){
-			Zombies[i] = Instantiate("Zombie_Normal", Pos + Offsets[i]).GetComponent<Zombie>();
-			Zombies[i].Follow(this, Offsets[i]);
-		}
+
+		MaxSpeed = 2.5f;
+		MaxForce = 2.5f;
+
+		Steering.Seeking = true;
+		Steering.f_SeekFactor = 1.0f;
+		Steering.Wandering = true;
+		Steering.f_WanderFactor = 0.25f;
 	}
-	
+
+	public void AddToGroup(Zombie z){
+		//nicht erneut hinzufügen
+		foreach(Zombie other in Zombies){
+			if(z == other) return;
+		}
+		//Suche freien Offset Platz
+		for(int i = 0; i < Zombies.Length; i++){
+			//Freier Platz gefunden
+			if(Zombies[i] == null){
+				//Eintragen
+				Zombies[i] = z;
+				//informieren
+				z.Follow(this, Offsets[i]);
+				return;
+			}
+		}
+		//kein freier Platz
+		//nichts tun
+	}
+
+	public void Eat(Human h){
+		Brains++;
+		h.Death();
+		PlaySound("RCL/01_05");
+	}
+
 	
 	public override void Death(){
 		base.Death();

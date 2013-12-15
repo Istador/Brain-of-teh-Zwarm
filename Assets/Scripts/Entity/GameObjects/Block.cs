@@ -25,9 +25,14 @@ public class Block : GeneralObject {
 		PlayerLeaved = false;
 		
 		//maximale Anzahl Mobs die gespawnt werden können
-		int maxMobs = System.Convert.ToInt32(System.Math.Sqrt((double)spawnPoints.Length));
-		int spawnN = rnd.Next(maxMobs+1);
-		Debug.Log("Spawn "+spawnN+" of max "+maxMobs);
+		int maxMobs = System.Convert.ToInt32(System.Math.Sqrt((double)spawnPoints.Length))+1;
+		Utility.MinMax(ref maxMobs, 0, spawnPoints.Length);
+
+		//wieviele tatsächlich gespawnt werden sollen (mind. 1)
+		int spawnN = rnd.Next(maxMobs+1)+1;
+		Utility.MinMax(ref spawnN, 0, spawnPoints.Length);
+
+		//Debug.Log("Spawn "+spawnN+" of max "+maxMobs);
 		for(;spawnN>0; spawnN--){
 			GameObject o = Instantiate(LevelScript.I.RandomEntity, RandomSpawnPoint);
 			o.transform.parent = entityParent;

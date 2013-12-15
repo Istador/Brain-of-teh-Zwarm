@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Zombie : MovableEntity<Zombie> {
+public class Zombie : MovableEntity<Entity> {
 	
 	private static AudioClip[] sounds;
 	
@@ -15,8 +15,8 @@ public class Zombie : MovableEntity<Zombie> {
 	
 	
 	public Zombie() : base(100) {
-		MaxSpeed = 8.5f;
-		MaxForce = 8.5f;		
+		MaxSpeed = 2.75f;
+		MaxForce = 2.75f;		
 		Steering.Wandering = true;
 	}
 	
@@ -83,13 +83,22 @@ public class Zombie : MovableEntity<Zombie> {
 	
 	
 	public void Follow(PlayerObject player, Vector3 offset){
-		Steering.Wandering = false;
-		
-		MaxSpeed = 15.0f;
-		MaxForce = 15.0f;
-		
+		//Steering.Wandering = false;
+		Steering.f_WanderFactor = 0.25f;
+
+		//Schneller werden
+		MaxSpeed = 3f;
+		MaxForce = 3f;
+
+		//in Formation
 		Steering.Offset = offset;
 		Steering.Target = (MovableEntity<Entity>)player;
 		Steering.OffsetPursuing = true;
+		Steering.f_OffPursueFactor = 0.75f;
+
+		//als Mitglied der Gruppe darf man Menschen fressen
+		GameObject t = Instantiate("PlayerTrigger");
+		t.transform.parent = transform;
+
 	}
 }

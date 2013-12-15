@@ -8,7 +8,7 @@ public class FireDamage : GeneralObject {
 
 
 
-	public static readonly int i_dmgAmount = 8;
+	public static readonly int i_dmgAmount = 4;
 
 
 

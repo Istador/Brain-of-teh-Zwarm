@@ -224,10 +224,10 @@ public class SteeringBehaviors<T> {
 		
 		return Seek(targetLocal + owner.Pos);
 	}
-	private static float f_WanderRadius = 4.0f;
+	private static float f_WanderRadius = 6.0f;
 	private static float f_WanderDistance = 5.0f;
-	private static float f_WanderJitter = 0.4f;
-	private Vector3 v_WanderTarget = new Vector3(f_WanderRadius, 0.0f, 0.0f);
+	private static float f_WanderJitter = 0.6f;
+	private Vector3 v_WanderTarget = new Vector3(-f_WanderRadius, 0.0f, 0.0f);
 	
 	
 	
@@ -246,9 +246,38 @@ public class SteeringBehaviors<T> {
 		float LAT = ToOffset.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
 		return Arrive(WorldOffset + target.rigidbody.velocity * LAT);
 	}
+
+
+
+	/// <summary>
+	/// Entität wandert zufällig durch den Raum umher
+	/// </summary>
+	private Vector3 WallAvoidance(Vector3 force){
+
+		Vector3 f = Vector3.zero;
+		Vector3 pos = owner.Pos;
+		Vector3 npos = pos + force;
+
+		Debug.DrawLine(pos, npos, Color.green);
+		RaycastHit hit;
+		bool hitted = owner.Linecast(pos, npos, out hit, GeneralObject.Layer.Level);
+
+		//hat eine Wand getroffen
+		if(hitted){
+			//Vector3 overshoot = force.normalized * (Mathf.Abs(force.magnitude) - hit.distance);
+			Debug.DrawLine(hit.point, npos, Color.red);
+
+			//von der Wand abgehend
+			f = hit.normal * hit.distance;
+
+			Debug.DrawLine(npos, npos+f, Color.yellow);
+		}
+
+		return f;
+	}
 	
 	
-	
+
 	/// <summary>
 	/// Anstreben ein-/ausschalten
 	/// </summary>
@@ -305,7 +334,15 @@ public class SteeringBehaviors<T> {
 	/// </param>
 	public bool OffsetPursuing {get; set;}
 	
-	
+	/// <summary>
+	/// Wall Avoidance ein-/ausschalten
+	/// </summary>
+	/// <param name='on'>
+	/// true=ein, false=aus
+	/// </param>
+	public bool WallAvoiding {get; set;}
+
+
 	
 	
 	
@@ -320,6 +357,7 @@ public class SteeringBehaviors<T> {
 		Evading = false;
 		Wandering = false;
 		OffsetPursuing = false;
+		WallAvoiding = false;
 	}
 	
 	
@@ -333,15 +371,16 @@ public class SteeringBehaviors<T> {
 	public Vector3 Calculate(){
 		Vector3 f = Vector3.zero;
 		
-		if(Seeking) f += Seek(TargetPos);
-		if(Fleeing) f += Flee(TargetPos);
-		if(Arriving) f += Arrive(TargetPos);
-		if(Pursuing && Target != null) f += Pursuit(Target);
-		if(Evading && Target != null) f += Evade(Target);
-		if(Wandering) f += Wander();
+		if(Seeking) f += Seek(TargetPos) * f_SeekFactor;
+		if(Fleeing) f += Flee(TargetPos) * f_FleeFactor;
+		if(Arriving) f += Arrive(TargetPos) * f_ArriveFactor;
+		if(Pursuing && Target != null) f += Pursuit(Target) * f_PursueFactor;
+		if(Evading && Target != null) f += Evade(Target) * f_EvadeFactor;
+		if(Wandering) f += Wander() * f_WanderFactor;
 		if(OffsetPursuing && Target != null && Offset != Vector3.zero) 
-			f += OffsetPursuit(Target, Offset);
-				
+			f += OffsetPursuit(Target, Offset) * f_OffPursueFactor;
+		if(WallAvoiding) f += WallAvoidance(f) * f_WallAvoidFactor;
+
 		//truncat
 		if(f != Vector3.zero && Mathf.Abs(f.magnitude) > owner.MaxForce)
 			f = f.normalized * owner.MaxForce;
@@ -349,6 +388,16 @@ public class SteeringBehaviors<T> {
 		return f;
 	}
 	
-	
+
+	public float f_SeekFactor = 1f;
+	public float f_FleeFactor = 1f;
+	public float f_ArriveFactor = 1f;
+	public float f_PursueFactor = 1f;
+	public float f_EvadeFactor = 1f;
+	public float f_WanderFactor = 1f;
+	public float f_OffPursueFactor = 1f;
+	public float f_WallAvoidFactor = 1f;
+
+
 	
 }

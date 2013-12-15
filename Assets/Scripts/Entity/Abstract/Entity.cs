@@ -40,7 +40,13 @@ public abstract class Entity : GeneralObject {
 		Health = MaxHealth;
 		HealthFactor = 1.0f;
 	}
-	
+
+	protected override void Update(){
+		base.Start();
+		
+		//Objekt faellt durch den Boden
+		if(Pos.y < -20f) Death();
+	}
 	
 	
 	// Trefferunkte Instanzvariablen

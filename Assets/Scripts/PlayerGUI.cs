@@ -2,34 +2,45 @@
 using System.Collections;
 
 public class PlayerGUI : MonoBehaviour {
-	
-	Glyph g_title;
-	Vector2 pos_title;
-	float size_title;
-	
-	
+
+	float sHeight;
+	float sWidth;
+	float s;
+
+	Glyph g_bl;
+	Vector2 pos_bl;
+	float size_bl = 0.2f;
 	
 	void Start(){
-		size_title = 0.2f;
-		g_title = GString.GetString(" Brainz");
-		pos_title = new Vector2(
-			Screen.width - g_title.Width(size_title), 
-			Screen.height - g_title.Height(size_title));
+
+		Glyph g_int = new GInteger(() =>  2 );
+		Glyph g_brainz = GString.GetString(" Brainz");
+		Glyph g_hp = new GHealthBar(150*5, 40*5, ()=>PlayerObject.I);
+
+		g_bl = GString.Concat(g_int, g_brainz, g_hp);
 	}
 	
-	void OnGUI(){
-		PlayerObject p = PlayerObject.I;
-		
-		//Player existiert
-		if(p != null && g_title != null){
-			//Anzahl gefundener Gehirne
-			Glyph g = GString.GetString(p.Brains.ToString());
-			Vector2 pos = new Vector2(pos_title.x - g.Width(size_title), pos_title.y);
-			g.Draw(size_title, pos);
+	void Resize(){
+		if(sWidth != Screen.width || sHeight != Screen.height){
+			sWidth = Screen.width;
+			sHeight = Screen.height;
 			
-			//" Brainz"
-			g_title.Draw(size_title, pos_title);
+			float aspect = (sWidth / sHeight) / (1680f/1050f);
+			s = (sHeight / 1050f) * aspect;
+
+			pos_bl = new Vector2(
+				sWidth - g_bl.Width(size_bl * s) - 10f*s,
+				sHeight - g_bl.Height(size_bl * s) - 10f*s
+				);
 		}
+		
+	}
+
+	
+	void OnGUI(){
+		Resize();
+		//"x Brainz"
+		g_bl.Draw(size_bl, pos_bl);
 	}
 	
 }
