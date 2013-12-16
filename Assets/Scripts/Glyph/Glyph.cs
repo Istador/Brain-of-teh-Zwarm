@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public interface Glyph {
-	void Draw(float size, Vector2 pos);
-	float Width(float size);
-	float Height(float size);
+	void Draw(double size, Vector2 pos);
+	double Width(double size);
+	double Height(double size);
 }

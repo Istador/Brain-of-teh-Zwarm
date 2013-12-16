@@ -20,19 +20,19 @@ public class PlayerHealthBar : MonoBehaviour {
 public class GHealthBar : Glyph {
 
 
-	public GHealthBar(float width, float height, float size, Func<Entity> entity){
+	public GHealthBar(double width, double height, double size, Func<Entity> entity){
 		_width = width;
 		_height = height;
 		basicsize = size;
 		this.entity = entity;
 	}
 
-	float basicsize;
+	double basicsize;
 
-	float _width;
-	public float Width(float size){return _width * basicsize * size;}
-	float _height;
-	public float Height(float size){return _height * basicsize * size;}
+	double _width;
+	public double Width(double size){return _width * basicsize * size;}
+	double _height;
+	public double Height(double size){return _height * basicsize * size;}
 	
 	/// <summary>
 	/// Referenz auf den Spieler von dem die HP angezeigt wird
@@ -67,19 +67,19 @@ public class GHealthBar : Glyph {
 	
 	
 	//GUI-Zeichnen
-	public void Draw(float size, Vector2 pos){
+	public void Draw(double size, Vector2 pos){
 
 		if(entity() != null){
 
-			float height = Height(size);
-			float width = Width(size);
+			float height = (float)Height(size);
+			float width = (float)Width(size);
 			float left = pos.x;
 			float top = pos.y;
 		
 
-			float px1 = Mathf.CeilToInt(1f * size * basicsize);
-			float px2 = Mathf.CeilToInt(2f * size * basicsize);
-			float px4 = Mathf.CeilToInt(4f * size * basicsize);
+			float px1 = (float)Math.Ceiling(1.0 * size * basicsize);
+			float px2 = (float)Math.Ceiling(2.0 * size * basicsize);
+			float px4 = (float)Math.Ceiling(4.0 * size * basicsize);
 
 			//Positionen/Breiten/Höhen der Rechtecke berechnen
 			Rect ra = new Rect(left, top, width, height);

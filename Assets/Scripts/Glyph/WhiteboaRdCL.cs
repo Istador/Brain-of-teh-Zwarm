@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 
 public abstract class AbstractFont {
-	public abstract float Width(char c, float size);
-	public abstract float Height(char c, float size);
-	public abstract void Draw(char c, float size, Vector2 pos);
+	public abstract double Width(char c, double size);
+	public abstract double Height(char c, double size);
+	public abstract void Draw(char c, double size, Vector2 pos);
 	
 	public static AbstractFont Selected = WhiteboaRdCL.I;
 }
@@ -16,9 +16,9 @@ public abstract class AbstractFont {
 public class WhiteboaRdCL : AbstractFont {
 	
 	//abstand zwischen einzelnen Zeichen
-	private const float charSpacing = 1.0f; // 1 pixel
+	private const double charSpacing = 1.0; // 1 pixel
 	//pixel um die sich die Breite von einzelnen Zeichen erhöht
-	private const float widthSpacing = charSpacing * 2.0f;
+	private const double widthSpacing = charSpacing * 2.0;
 	
 	
 	
@@ -26,7 +26,7 @@ public class WhiteboaRdCL : AbstractFont {
 	
 	
 	
-	private float sWidth;
+	private double sWidth;
 	
 	
 
@@ -35,59 +35,59 @@ public class WhiteboaRdCL : AbstractFont {
 	
 	//offset from left to the start of character
 	//calculated by: offset[px] / (image width of one char-field)[px] = off / 150
-	private float[] charoffset = {
+	private double[] charoffset = {
 		
-		0.22666667f, 0.25000000f, 0.23000000f, 0.23000000f, 0.24000000f,	// A-E
-		0.27333333f, 0.12000000f, 0.19333333f, 0.38333333f, 0.23333333f,	// F-J
-		0.15666667f, 0.20000000f, 0.03333333f, 0.06666667f, 0.15666667f,	// K-O
-		0.22666667f, 0.13000000f, 0.23000000f, 0.20666667f, 0.13333333f,	// P-T
-		0.18000000f, 0.15000000f, 0.05666667f, 0.19000000f, 0.23000000f,	// U-Y
-		0.20000000f,														// X
+		0.22666667, 0.25000000, 0.23000000, 0.23000000, 0.24000000,	// A-E
+		0.27333333, 0.12000000, 0.19333333, 0.38333333, 0.23333333,	// F-J
+		0.15666667, 0.20000000, 0.03333333, 0.06666667, 0.15666667,	// K-O
+		0.22666667, 0.13000000, 0.23000000, 0.20666667, 0.13333333,	// P-T
+		0.18000000, 0.15000000, 0.05666667, 0.19000000, 0.23000000,	// U-Y
+		0.20000000,													// X
 		
-		0.24000000f, 0.30666667f, 0.28000000f, 0.26666667f, 0.30000000f,	// a-e
-		0.28000000f, 0.28666667f, 0.22000000f, 0.32666667f, 0.18666667f,	// f-j
-		0.28666667f, 0.32000000f, 0.02000000f, 0.16666667f, 0.22000000f,	// k-o
-		0.24666667f, 0.26000000f, 0.16666667f, 0.27333333f, 0.22666667f,	// p-t
-		0.22000000f, 0.24666667f, 0.11333333f, 0.28000000f, 0.27333333f,	// u-y
-		0.24666667f, 														// x
+		0.24000000, 0.30666667, 0.28000000, 0.26666667, 0.30000000,	// a-e
+		0.28000000, 0.28666667, 0.22000000, 0.32666667, 0.18666667,	// f-j
+		0.28666667, 0.32000000, 0.02000000, 0.16666667, 0.22000000,	// k-o
+		0.24666667, 0.26000000, 0.16666667, 0.27333333, 0.22666667,	// p-t
+		0.22000000, 0.24666667, 0.11333333, 0.28000000, 0.27333333,	// u-y
+		0.24666667, 												// x
 		
-		0.19000000f, 0.27666667f, 0.23000000f, 0.30000000f, 0.18666667f,	// 0-4
-		0.24666667f, 0.23000000f, 0.17000000f, 0.17333333f, 0.29000000f,	// 5-9
+		0.19000000, 0.27666667, 0.23000000, 0.30000000, 0.18666667,	// 0-4
+		0.24666667, 0.23000000, 0.17000000, 0.17333333, 0.29000000,	// 5-9
 		
-		0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,		// ...
-		0f, 0f, 0f, 0f, 0f, 0f,						// ...
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		// ...
+		0, 0, 0, 0, 0, 0,					// ...
 		
-		0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,		// ...
-		0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,		// ...
-		0f, 0f, 0f, 0f, 0f, 0.25000000f,			// ..., Space
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		// ...
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		// ...
+		0, 0, 0, 0, 0, 0.25000000,			// ..., Space
 	};
 	
 	//width of char without whitespace
 	//calculated by: 1 - offset[px] / (image width of one char-field)[px] * 2 = 1 - off / 75
-	private float[] charscale = {
-		0.54666667f, 0.50000000f, 0.54000000f, 0.54000000f, 0.52000000f,	// A-E
-		0.45333333f, 0.76000000f, 0.61333333f, 0.23333333f, 0.53333333f,	// F-J
-		0.68666667f, 0.60000000f, 0.93333333f, 0.86666667f, 0.68666667f,	// K-O
-		0.54666667f, 0.74000000f, 0.54000000f, 0.58666667f, 0.73333333f,	// P-T
-		0.64000000f, 0.70000000f, 0.88666667f, 0.62000000f, 0.54000000f,	// U-Y
-		0.60000000f,														// X
+	private double[] charscale = {
+		0.54666667, 0.50000000, 0.54000000, 0.54000000, 0.52000000,	// A-E
+		0.45333333, 0.76000000, 0.61333333, 0.23333333, 0.53333333,	// F-J
+		0.68666667, 0.60000000, 0.93333333, 0.86666667, 0.68666667,	// K-O
+		0.54666667, 0.74000000, 0.54000000, 0.58666667, 0.73333333,	// P-T
+		0.64000000, 0.70000000, 0.88666667, 0.62000000, 0.54000000,	// U-Y
+		0.60000000,													// X
 		
-		0.52000000f, 0.38666667f, 0.44000000f, 0.46666667f, 0.40000000f,	// a-e
-		0.44000000f, 0.42666667f, 0.56000000f, 0.34666667f, 0.62666667f,	// f-j
-		0.42666667f, 0.36000000f, 0.96000000f, 0.66666667f, 0.56000000f,	// k-o
-		0.50666667f, 0.48000000f, 0.66666667f, 0.45333333f, 0.54666667f,	// p-t
-		0.56000000f, 0.50666667f, 0.77333333f, 0.44000000f, 0.45333333f,	// u-y
-		0.50666667f,														// x
+		0.52000000, 0.38666667, 0.44000000, 0.46666667, 0.40000000,	// a-e
+		0.44000000, 0.42666667, 0.56000000, 0.34666667, 0.62666667,	// f-j
+		0.42666667, 0.36000000, 0.96000000, 0.66666667, 0.56000000,	// k-o
+		0.50666667, 0.48000000, 0.66666667, 0.45333333, 0.54666667,	// p-t
+		0.56000000, 0.50666667, 0.77333333, 0.44000000, 0.45333333,	// u-y
+		0.50666667,													// x
 		
-		0.62000000f, 0.44666667f, 0.54000000f, 0.40000000f, 0.62666667f,	// 0-4
-		0.50666667f, 0.54000000f, 0.66000000f, 0.65333333f, 0.42000000f,	// 5-9
+		0.62000000, 0.44666667, 0.54000000, 0.40000000, 0.62666667,	// 0-4
+		0.50666667, 0.54000000, 0.66000000, 0.65333333, 0.42000000,	// 5-9
 		
-		1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 	// ...
-		1f, 1f, 1f, 1f, 1f, 1f,						// ...
-		
-		1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 	// ...
-		1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 	// ...
-		1f, 1f, 1f, 1f, 1f, 0.50000000f				// ..., Space
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 	// ...
+		1, 1, 1, 1, 1, 1,				// ...
+
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 	// ...
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 	// ...
+		1, 1, 1, 1, 1, 0.50000000		// ..., Space
 	};
 	
 	
@@ -99,8 +99,8 @@ public class WhiteboaRdCL : AbstractFont {
 	
 	private WhiteboaRdCL(){
 		font = Resource.Texture["Font"];
-		_width = (float)font.width / 26.0f;
-		_height = (float)font.height / 4.0f;
+		_width = (double)font.width / 26.0f;
+		_height = (double)font.height / 4.0f;
 		sWidth = _height / _width;
 		_width *= sWidth;
 		
@@ -114,23 +114,23 @@ public class WhiteboaRdCL : AbstractFont {
 	
 	
 	
-	private float _width;
-	private float Width(float size){return _width * size;}
-	private float Width(int index, float size){return Width(size) * charscale[index] + widthSpacing;}
-	public override float Width(char c, float size){return Width(index(c), size);}
+	private double _width;
+	private double Width(double size){return _width * size;}
+	private double Width(int index, double size){return Width(size) * charscale[index] + widthSpacing*size;}
+	public override double Width(char c, double size){return Width(index(c), size);}
 	
 	
 	
-	private float _height;
-	private float Height(float size){return _height * size;}
-	private float Height(int index, float size){return Height(size);}
-	public override float Height(char c, float size){return Height(index(c), size);}
+	private double _height;
+	private double Height(double size){return _height * size;}
+	private double Height(int index, double size){return Height(size);}
+	public override double Height(char c, double size){return Height(index(c), size);}
 	
 	
 	
-	public override void Draw(char c, float size, Vector2 pos){
+	public override void Draw(char c, double size, Vector2 pos){
 		int i = index(c);
-		GUI.BeginGroup(new Rect(pos.x, pos.y, Width(i, size), Height(i, size)));
+		GUI.BeginGroup(new Rect(pos.x, pos.y, (float)Width(i, size), (float)Height(i, size)));
 		GUI.DrawTexture(getCrop(i, size), font);
 		GUI.EndGroup();
 		//Debug.Log(getCrop(c, size) + " : " + Width(c, size) + "x" + Height(c, size) );
@@ -155,11 +155,11 @@ public class WhiteboaRdCL : AbstractFont {
 	
 	
 	
-	private static Dictionary<float, Dictionary<int,Rect>> sizemap = new Dictionary<float, Dictionary<int,Rect>>();
+	private static Dictionary<double, Dictionary<int,Rect>> sizemap = new Dictionary<double, Dictionary<int,Rect>>();
 	
 	
 	
-	private Rect getCrop(int c, float size){
+	private Rect getCrop(int c, double size){
 		//SubMap erstellen wenn nicht vorhanden
 		if(!sizemap.ContainsKey(size))
 			sizemap.Add(size, new Dictionary<int, Rect>());
@@ -167,7 +167,7 @@ public class WhiteboaRdCL : AbstractFont {
 		//Char noch nicht vorhanden
 		if(!sizemap[size].ContainsKey(c)){
 			Vector2 v = getPos(c);
-			Rect r = new Rect(Width(size) * (-v.x - charoffset[c]) + charSpacing, -Height(size) * v.y, font.width*sWidth*size, font.height*size);
+			Rect r = new Rect((float)(Width(size) * (-v.x - charoffset[c]) + charSpacing*size), (float)(-Height(size) * v.y), (float)(font.width*sWidth*size), (float)(font.height*size));
 			sizemap[size].Add(c, r);
 		}
 		

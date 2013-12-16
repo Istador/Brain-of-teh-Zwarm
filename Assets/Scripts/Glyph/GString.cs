@@ -26,18 +26,18 @@ public class GString : Glyph {
 	
 	
 	
-	public void Draw(float size, Vector2 pos){
+	public void Draw(double size, Vector2 pos){
 		foreach(Glyph g in str){
-			float w = g.Width(size);
+			double w = g.Width(size);
 			g.Draw(size, pos);
-			pos = new Vector2(pos.x + w, pos.y);
+			pos = new Vector2((float)(pos.x + w), pos.y);
 		}
 	}
 	
 	
 	
-	public float Width(float size){
-		float w = 0.0f;
+	public double Width(double size){
+		double w = 0.0;
 		foreach(Glyph g in str)
 			w += g.Width(size);
 		return w;
@@ -45,10 +45,10 @@ public class GString : Glyph {
 	
 	
 	
-	public float Height(float size){
-		float h = 0.0f;
+	public double Height(double size){
+		double h = 0.0;
 		foreach(Glyph g in str){
-			float nh = g.Height(size);
+			double nh = g.Height(size);
 			if(nh > h) h = nh;
 		}
 		return h;

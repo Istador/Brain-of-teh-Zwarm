@@ -66,7 +66,10 @@ public static class Utility {
 	/// <param name='c'>
 	/// Füll-Farbe des Rechteckes
 	/// </param>
-	public static void DrawRectangle(Rect position, Color c){
+	public static void DrawRectangle(Rect r, Color c){
+		GUI.BeginGroup(r);
+
+		// 1x1 px große Textur mit der gewuenschten Farbe
 		Texture2D t = new Texture2D(1,1);
 		t.SetPixel(0,0, c);
 		t.wrapMode = TextureWrapMode.Repeat;
@@ -74,11 +77,13 @@ public static class Utility {
 		
 		Texture2D tmp = GUI.skin.box.normal.background;
 		GUI.skin.box.normal.background = t;
-		GUI.Box(position, GUIContent.none);
+		GUI.Box(new Rect(0f, 0f, r.width, r.height), GUIContent.none);
 		GUI.skin.box.normal.background = tmp;
+
+		GUI.EndGroup();
 	}
-	
-	
+
+
 	
 	/// <summary>
 	/// Zeichnet einen farbigen Text auf die GUI

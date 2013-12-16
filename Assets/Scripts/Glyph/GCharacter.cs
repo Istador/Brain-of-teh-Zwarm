@@ -19,17 +19,17 @@ public class GCharacter : Glyph {
 	
 	
 	
-	public void Draw(float size, Vector2 pos){
+	public void Draw(double size, Vector2 pos){
 		AbstractFont.Selected.Draw(c, size, pos);
 	}
 	
 	
 	
-	public float Width(float size){return AbstractFont.Selected.Width(c, size);}
+	public double Width(double size){return AbstractFont.Selected.Width(c, size);}
 	
 	
 	
-	public float Height(float size){return AbstractFont.Selected.Height(c, size);}
+	public double Height(double size){return AbstractFont.Selected.Height(c, size);}
 	
 	
 	

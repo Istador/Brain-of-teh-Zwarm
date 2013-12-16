@@ -5,7 +5,7 @@ public class FontDemo : MonoBehaviour {
 
 	Glyph g_title;
 	Vector2 pos_title;
-	float size_title = 1.0f;
+	double size_title = 1.0f;
 
 	Glyph g_upper;
 	Vector2 pos_upper;
@@ -14,11 +14,11 @@ public class FontDemo : MonoBehaviour {
 	Glyph g_numeric;
 	Vector2 pos_numeric;
 
-	float size_chars = 0.7f;
+	double size_chars = 0.7f;
 
-	float sHeight;
-	float sWidth;
-	float s;
+	double sHeight;
+	double sWidth;
+	double s;
 	
 	void Start(){
 		g_title = GString.GetString("Brain of teh Zwarm");
@@ -32,18 +32,18 @@ public class FontDemo : MonoBehaviour {
 			sWidth = Screen.width;
 			sHeight = Screen.height;
 
-			float aspect = (sWidth / sHeight) / (1680f/1050f);
-			s = (sHeight / 1050f) * aspect;
+			double aspect = (sWidth / sHeight) / (1680.0/1050.0);
+			s = (sHeight / 1050.0) * aspect;
 
 			//Zentriert
 			pos_title = new Vector2(
-				(sWidth - g_title.Width(size_title * s)) * 0.5f, 
-				(sHeight - g_title.Height(size_title * s)) * 0.5f
+				(float)((sWidth - g_title.Width(size_title * s)) * 0.5), 
+				(float)((sHeight - g_title.Height(size_title * s)) * 0.5)
 			);
 
-			pos_upper = new Vector2(10f, 10f);
-			pos_lower = pos_upper + new Vector2(0f, 10f +  g_upper.Height(size_chars * s));
-			pos_numeric = new Vector2(10f, sHeight - 10f -  g_numeric.Height(size_chars * s));
+			pos_upper = new Vector2(10.0f, 10.0f);
+			pos_lower = pos_upper + new Vector2(0.0f, (float)(10.0 +  g_upper.Height(size_chars * s)));
+			pos_numeric = new Vector2(10.0f, (float)(sHeight - 10.0 -  g_numeric.Height(size_chars * s)));
 		}
 
 	}

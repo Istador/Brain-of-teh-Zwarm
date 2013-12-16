@@ -26,22 +26,22 @@ public class GInteger : Glyph {
 		}
 	}
 
-	public void Draw(float size, Vector2 pos){
+	public void Draw(double size, Vector2 pos){
 		recheck();
 		if(str != null)
 			str.Draw(size, pos);
 		recheckNeeded = true;
 	}
 
-	public float Width(float size){
+	public double Width(double size){
 		recheck();
-		if(str == null) return 0.0f;
+		if(str == null) return 0.0;
 		return str.Width(size);
 	}
 
-	public float Height(float size){
+	public double Height(double size){
 		recheck();
-		if(str == null) return 0.0f;
+		if(str == null) return 0.0;
 		return str.Height(size);
 	}
 }
