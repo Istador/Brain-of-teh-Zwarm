@@ -9,7 +9,7 @@ public class Horizont : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		bool new_status = Input.GetButton("Horizon");
+		bool new_status = Input.GetButton("Horizont");
 
 		if(but_status && !new_status){
 			but_status = false;

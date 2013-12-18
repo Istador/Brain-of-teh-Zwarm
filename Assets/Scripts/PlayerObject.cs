@@ -36,8 +36,8 @@ public class PlayerObject : MovableEntity<Entity> {
 		instance = this;
 		Brains = 0;
 
-		MaxSpeed = 2.5f;
-		MaxForce = 2.5f;
+		MaxSpeed = 2.4f;
+		MaxForce = 2.4f;
 
 		Steering.Seeking = true;
 		Steering.f_SeekFactor = 1.0f;

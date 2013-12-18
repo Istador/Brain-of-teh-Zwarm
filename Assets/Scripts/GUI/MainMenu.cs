@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Reflection;
 
 public class MainMenu: MonoBehaviour {
 
@@ -36,8 +37,19 @@ public class MainMenu: MonoBehaviour {
 		Application.Quit();
 
 		//beendet das Spielen innerhalb des Unity-Editors
-		//TODO: Auskommentieren für Release-Build !
-		UnityEditor.EditorApplication.isPlaying = false;
+
+		//UnityEditor.EditorApplication.isPlaying = false;
+		//dynamisch zur Laufzeit
+		Type t = null;
+		foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
+			t = a.GetType("UnityEditor.EditorApplication");
+			if(t != null){
+				t.GetProperty("isPlaying").SetValue(null, false, null);
+				break;
+			}
+		}
+
+
 	};
 
 
@@ -53,12 +65,12 @@ public class MainMenu: MonoBehaviour {
 		g_start.Padding.all = 10.0;
 		g_start.Border.all = 4.0;
 
-		//Quit nicht im Editor oder WebPlayer zeigen
-		//if(!( Application.isWebPlayer || Application.isEditor)){
+		//Quit nicht im WebPlayer zeigen
+		if(!(Application.isWebPlayer)){
 			g_quit = new GButton(250, 40, GString.GetString("Spiel beenden"), a_quit);
 			g_quit.Padding.all = 10.0;
 			g_quit.Border.all = 4.0;
-		//}
+		}
 	}
 
 

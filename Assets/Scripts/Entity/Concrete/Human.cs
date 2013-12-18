@@ -3,11 +3,11 @@ using System.Collections;
 
 public class Human : MovableEntity<Human> {
 
-	public static float f_slowSpeed = 2.25f;
-	public static float f_normalSpeed = 2.5f;
+	public static float f_slowSpeed = 2.0f;
+	public static float f_normalSpeed = 2.75f;
 	public static float f_runSpeed = 3.25f;
 
-	public static float f_runningTime = 4.0f; // 4 Sekunden rennen, dann erschöpft
+	public static float f_runningTime = 10.0f; // 10 Sekunden rennen, dann erschöpft
 	
 	public Human() : base(100) {
 		//Zustandsautomaten initialisieren

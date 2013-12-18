@@ -16,7 +16,7 @@ public class Zombie : MovableEntity<Entity> {
 	
 	public Zombie() : base(100) {
 		MaxSpeed = 2.75f;
-		MaxForce = 2.75f;		
+		MaxForce = 2.75f;
 		Steering.Wandering = true;
 	}
 	
@@ -84,17 +84,17 @@ public class Zombie : MovableEntity<Entity> {
 	
 	public void Follow(PlayerObject player, Vector3 offset){
 		//Steering.Wandering = false;
-		Steering.f_WanderFactor = 0.25f;
+		Steering.f_WanderFactor = 0.20f;
 
 		//Schneller werden
-		MaxSpeed = 3f;
-		MaxForce = 3f;
+		MaxSpeed = 3.0f;
+		MaxForce = 3.0f;
 
 		//in Formation
 		Steering.Offset = offset;
 		Steering.Target = (MovableEntity<Entity>)player;
 		Steering.OffsetPursuing = true;
-		Steering.f_OffPursueFactor = 0.75f;
+		Steering.f_OffPursueFactor = 0.80f;
 
 		//als Mitglied der Gruppe darf man Menschen fressen
 		GameObject t = Instantiate("PlayerTrigger");
