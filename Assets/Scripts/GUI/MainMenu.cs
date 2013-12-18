@@ -125,4 +125,11 @@ public class MainMenu: MonoBehaviour {
 
 
 
+	void Update(){
+		if(Input.GetKeyDown(KeyCode.F)){
+			MessageDispatcher.I.EmptyQueue();
+			Application.LoadLevel(2);
+		}
+	}
+
 }

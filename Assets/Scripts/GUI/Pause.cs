@@ -62,7 +62,7 @@ public class Pause : MonoBehaviour {
 		g_resume.Padding.all = 10.0;
 		g_resume.Border.all = 4.0;
 
-		g_menu = new GButton(250, 40, GString.GetString("Zum Hauptmenue"), a_menu);
+		g_menu = new GButton(250, 40, GString.GetString("Zum Hauptmenü"), a_menu);
 		g_menu.Padding.all = 10.0;
 		g_menu.Border.all = 4.0;
 	}

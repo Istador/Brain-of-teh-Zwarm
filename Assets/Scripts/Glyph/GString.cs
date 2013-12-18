@@ -5,57 +5,31 @@ using System.Collections.Generic;
 // Composite Pattern
 // 
 
-public class GString : Glyph {
+public class GString : GConcat {
 	
 	
-	
-	private List<Glyph> str = new List<Glyph>();
+
+	public readonly string String;
 
 
 
-	private GString(params Glyph[] gls){
-		foreach(Glyph g in gls)
-			this.str.Add(g);
+	private GString(string str) : base(FromString(str)) {
+		this.String = str;
 	}
-	
-	
-	private GString(string str){
-		foreach(char c in str)
-			this.str.Add(GCharacter.GetCharacter(c));
+
+
+
+	private static Glyph[] FromString(string str){
+		Glyph[] gs = new Glyph[str.Length];
+		
+		for(int i=0; i<str.Length; i++)
+			gs[i] = GCharacter.GetCharacter(str[i]);
+
+		return gs;
 	}
-	
-	
-	
-	public void Draw(double size, Vector2 pos){
-		foreach(Glyph g in str){
-			double w = g.Width(size);
-			g.Draw(size, pos);
-			pos = new Vector2((float)(pos.x + w), pos.y);
-		}
-	}
-	
-	
-	
-	public double Width(double size){
-		double w = 0.0;
-		foreach(Glyph g in str)
-			w += g.Width(size);
-		return w;
-	}
-	
-	
-	
-	public double Height(double size){
-		double h = 0.0;
-		foreach(Glyph g in str){
-			double nh = g.Height(size);
-			if(nh > h) h = nh;
-		}
-		return h;
-	}
-	
-	
-	
+
+
+
 	//HashMap
 	private static Dictionary<string, GString> map = new Dictionary<string, GString>();
 	
@@ -68,10 +42,6 @@ public class GString : Glyph {
 		return map[str];
 	}
 
-	public static GString Concat(params Glyph[] glyphs){
-		return new GString(glyphs);
-	}
-	
-	
+
 	
 }

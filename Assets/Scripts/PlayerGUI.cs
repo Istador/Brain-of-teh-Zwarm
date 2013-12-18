@@ -20,7 +20,7 @@ public class PlayerGUI : MonoBehaviour {
 		Glyph g_brainz = GString.GetString(" Brainz ");
 		Glyph g_hp = new GHealthBar(150, 40, 3, ()=>PlayerObject.I);
 
-		g_bl = GString.Concat(g_int, g_brainz, g_hp);
+		g_bl = GConcat.Concat(g_int, g_brainz, g_hp);
 	}
 	
 	void Resize(){
