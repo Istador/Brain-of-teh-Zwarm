@@ -11,6 +11,7 @@ public class PlayerGUI : MonoBehaviour {
 	Vector2 pos_bl;
 	float size_bl = 0.5f;
 
+
 	void Start(){
 		Glyph g_int = new GInteger(() => {
 			if(PlayerObject.I == null) return null;
@@ -40,9 +41,12 @@ public class PlayerGUI : MonoBehaviour {
 
 	
 	void OnGUI(){
-		Resize();
-		//"x Brainz"
-		g_bl.Draw(size_bl * s, pos_bl);
+		//Spiel ist nicht pausiert
+		if(Time.timeScale != 0.0f){
+			Resize();
+			//"x Brainz"
+			g_bl.Draw(size_bl * s, pos_bl);
+		}
 	}
 	
 }

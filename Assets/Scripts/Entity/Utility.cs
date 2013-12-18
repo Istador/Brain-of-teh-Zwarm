@@ -70,14 +70,22 @@ public static class Utility {
 		GUI.BeginGroup(r);
 
 		Texture2D tmp = GUI.skin.box.normal.background;
-		GUI.skin.box.normal.background = TextureOfColor(c);
+		txt.SetPixel(0,0,c);
+		txt.Apply();
+		GUI.skin.box.normal.background = txt;
 		GUI.Box(new Rect(0f, 0f, r.width, r.height), GUIContent.none);
 		GUI.skin.box.normal.background = tmp;
 
 		GUI.EndGroup();
 	}
-
-
+	
+	private static Texture2D _txt = null;
+	private static Texture2D txt { get{
+			if(_txt == null)
+				_txt = TextureOfColor(Color.clear);
+			return _txt;
+		}
+	}
 
 	public static Texture2D TextureOfColor(Color c){
 		// 1x1 px große Textur mit der gewuenschten Farbe

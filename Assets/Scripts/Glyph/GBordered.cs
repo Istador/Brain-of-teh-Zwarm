@@ -44,7 +44,7 @@ public class GBordered : Glyph {
 	private Dictionary<double, Rect[]> borderCache = new Dictionary<double, Rect[]>();
 
 	private Rect RectFromDouble(double left, double top, double width, double height){
-		return new Rect((float) left, (float)top, (float)width, (float)height);
+		return new Rect((float)left, (float)top, (float)width, (float)height);
 	}
 
 	private Rect Move(Rect r, Vector2 v){

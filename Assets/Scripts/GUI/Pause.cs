@@ -89,6 +89,7 @@ public class Pause : MonoBehaviour {
 	/// Ist das Spiel jetzt gerade pausiert?
 	/// </summary>
 	private bool paused = false;
+	public bool Paused{get{return paused;}}
 	
 	
 	
