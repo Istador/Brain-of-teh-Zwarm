@@ -69,9 +69,9 @@ public static class Utility {
 	public static void DrawRectangle(Rect r, Color c){
 		GUI.BeginGroup(r);
 
-		Texture2D tmp = GUI.skin.box.normal.background;
 		txt.SetPixel(0,0,c);
 		txt.Apply();
+		Texture2D tmp = GUI.skin.box.normal.background;
 		GUI.skin.box.normal.background = txt;
 		GUI.Box(new Rect(0f, 0f, r.width, r.height), GUIContent.none);
 		GUI.skin.box.normal.background = tmp;
