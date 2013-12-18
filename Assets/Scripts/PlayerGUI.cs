@@ -11,14 +11,7 @@ public class PlayerGUI : MonoBehaviour {
 	Vector2 pos_bl;
 	float size_bl = 0.5f;
 
-	Glyph g_button;
-	Vector2 pos_button;
-	float size_button = 1f;
-
 	void Start(){
-		pos_button = new Vector2(10f, 10f);
-		g_button = new GButton(200, 50, GString.GetString("Button"), (b)=>{});
-
 		Glyph g_int = new GInteger(() => {
 			if(PlayerObject.I == null) return null;
 			else return PlayerObject.I.Brains;
@@ -50,8 +43,6 @@ public class PlayerGUI : MonoBehaviour {
 		Resize();
 		//"x Brainz"
 		g_bl.Draw(size_bl * s, pos_bl);
-
-		g_button.Draw(size_button, pos_button);
 	}
 	
 }

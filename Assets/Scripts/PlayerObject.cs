@@ -5,10 +5,7 @@ public class PlayerObject : MovableEntity<Entity> {
 	
 	public int Brains { get; private set; }
 	
-	public PlayerObject() : base(150) {
-		instance = this;
-		Brains = 0;
-	}
+	public PlayerObject() : base(150) {}
 
 
 	protected override void FixedUpdate () {
@@ -35,6 +32,9 @@ public class PlayerObject : MovableEntity<Entity> {
 		
 	protected override void Start(){
 		base.Start();
+
+		instance = this;
+		Brains = 0;
 
 		MaxSpeed = 2.5f;
 		MaxForce = 2.5f;
@@ -68,7 +68,7 @@ public class PlayerObject : MovableEntity<Entity> {
 	public void Eat(Human h){
 		Brains++;
 		h.Death();
-		PlaySound("RCL/01_05");
+		PlaySound("RCL/omnomnom");
 	}
 
 	

@@ -7,71 +7,78 @@ using System.Collections.Generic;
 /// 
 public class GButton : Glyph {
 
-	private double maxWidth;
-	private double maxHeight;
+
+
+	private static int buttons = 0;
+	private int id;
+	private String name;
+
+
 
 	private Action<GButton> action;
-	private Glyph g;
 
-	//in pixeln:
-	public double Margin = 0f; //außen
-	public double Border = 1f; //rand
-	public double Padding = 1f; //innen
+	private GFilled gFill;
+	private GBordered gBorder;
+	private GLimited gLimit;
+	private Glyph gContent;
+
+	public Position Padding {get{return gBorder.Padding;}}
+	public Position Border {get{return gBorder.Border;}}
+	public Position Margin {get{return gBorder.Margin;}}
+
+	public bool Enabled = true;
 
 	public GButton(double width, double height, Glyph g, Action<GButton> action){
-		this.maxWidth = width;
-		this.maxHeight = height;
 		this.action = action;
-		this.g = g;
+
+		id = buttons++;
+		name = "GButton"+id;
+
+		gContent = g;
+		gLimit = new GLimited(width, height, gContent);
+		gBorder = new GBordered(gLimit);
+		gFill = new GFilled(Color.white, gBorder);
+
+		gBorder.Enabled = false;
 	}
 
-	private Dictionary<double, object[]> cache = new Dictionary<double, object[]>();
-
 	public void Draw(double size, Vector2 pos){
-		if(!cache.ContainsKey(size)){
-			double rand = (Margin+Border+Padding)*size;
 
-			//Ausmaße des Content Bereichs
-			double contWidth = Width(size) - 2f*rand;
-			double contHeight = Height(size) - 2f*rand;
-			 
-			double corrSize = size;
+		//transparenter Button
+		Color tmp = GUI.backgroundColor;
+		GUI.backgroundColor = Color.clear;
+		bool pressed = GUI.Button(
+			new Rect(pos.x, pos.y, (float)Width(size), (float)Height(size)),
+			new GUIContent("", name)
+		);
+		GUI.backgroundColor = tmp;
 
-			//width not bigger than max width
-			double width = g.Width(corrSize);
-			if(width > contWidth)
-				corrSize *= contWidth/width;
-
-			//height not bigger than max height
-			double height = g.Height(corrSize);
-			if(height > contHeight)
-				corrSize *= contHeight/height;
-
-			//Endwerte
-			width = g.Width(corrSize);
-			height = g.Height(corrSize);
-
-			//mittig ausrichten
-			float left = (float)(rand + (contWidth - width)/2.0 );
-			float top = (float)(rand + (contHeight - height)/2.0 );
-
-			cache.Add(size, new object[]{corrSize, new Vector2(left, top)});
+		//if Mouseover
+		if(GUI.tooltip == name){
+			gFill.color = Color.grey;
+			gBorder.Enabled = true;
+		} else {
+			gFill.color = Color.white;
+			gBorder.Enabled = false;
 		}
 
-		Utility.DrawRectangle(new Rect(pos.x, pos.y, (float)Width(size), (float)Height(size)), Color.green);
 
-		//zeichnen
-		object[] c = cache[size];
-		g.Draw((double)c[0], pos + (Vector2)c[1]);
+		//Button zeichnen
+		gFill.Draw(size, pos);
 
+		//Aktion ausführen beim Click
+		if(Enabled && pressed){
+		//	Enabled = false;
+			action(this);
+		}
 	}
 
 	public double Width(double size){
-		return maxWidth * size;
+		return gFill.Width(size);
 	}
 
 	public double Height(double size){
-		return maxHeight * size;
+		return gFill.Height(size);
 	}
 
 }
