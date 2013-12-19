@@ -33,22 +33,16 @@ public class MainMenu: MonoBehaviour {
 
 	Action<GButton> a_quit = (b) => {
 		//Beendet das Spiel
-		//innerhalb des Unity-Editors ohne Wirkung
+		#if UNITY_EDITOR
+		//Unity Editor
+		UnityEditor.EditorApplication.isPlaying = false;
+		#elif UNITY_WEBPLAYER
+		//Webplayer
+		//Application.OpenURL("https://games.blakcpinguin.de/");
+		#else
+		//Standalone Build
 		Application.Quit();
-
-		//beendet das Spielen innerhalb des Unity-Editors
-
-		//UnityEditor.EditorApplication.isPlaying = false;
-		//dynamisch zur Laufzeit
-		Type t = null;
-		foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
-			t = a.GetType("UnityEditor.EditorApplication");
-			if(t != null){
-				t.GetProperty("isPlaying").SetValue(null, false, null);
-				break;
-			}
-		}
-
+		#endif
 
 	};
 
