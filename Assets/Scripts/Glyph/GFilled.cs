@@ -24,8 +24,10 @@ public class GFilled : Glyph {
 
 
 	public void Draw(double size, Vector2 pos){
-		Rect r = new Rect(pos.x, pos.y, (float)Width(size), (float)Height(size));
-		Utility.DrawRectangle(r, color);
+		if(Enabled){
+			Rect r = new Rect(pos.x, pos.y, (float)Width(size), (float)Height(size));
+			Utility.DrawRectangle(r, color);
+		}
 		g.Draw(size, pos);
 	}
 
