@@ -9,6 +9,7 @@ public class PlayerObject : MovableEntity<Entity> {
 
 
 	protected override void FixedUpdate () {
+		//Tastatur
 		float ver = Input.GetAxis("Vertical");
 		Vector3 x = new Vector3(0f, 0f, ver) * MaxSpeed;
 		Steering.TargetPos = Pos + x;
@@ -43,6 +44,9 @@ public class PlayerObject : MovableEntity<Entity> {
 		Steering.f_SeekFactor = 1.0f;
 		Steering.Wandering = true;
 		Steering.f_WanderFactor = 0.25f;
+
+		//TODO: Inputs verwenden
+		//Inputs.I.Register("Aktion1", (b)=>{if(b)Debug.Log("down"); else Debug.Log("up");});
 	}
 
 	public void AddToGroup(Zombie z){

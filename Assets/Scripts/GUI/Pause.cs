@@ -32,7 +32,7 @@ public class Pause : MonoBehaviour {
 	GButton g_menu = null;
 	Vector2 pos_menu;
 
-	bool prellschutz = false;
+	//bool prellschutz = false;
 
 	void Start(){
 		
@@ -65,10 +65,17 @@ public class Pause : MonoBehaviour {
 		g_menu = new GButton(250, 40, GString.GetString("Zum Hauptmenü"), a_menu);
 		g_menu.Padding.all = 10.0;
 		g_menu.Border.all = 4.0;
+
+		Inputs.I.Register("Pause", ()=>{
+			//prüfen ob das Spiel pausiert
+		    if(!paused) PauseGame();
+		    //oder fortgesetzt werden soll
+		    else ResumeGame();
+		});
 	}
 
 
-
+	/*
 	void Update() {
 		if(Input.GetButton("Pause")){
 			if(!prellschutz){
@@ -82,6 +89,7 @@ public class Pause : MonoBehaviour {
 			prellschutz = false;
 		}
 	}
+	*/
 	
 	
 	

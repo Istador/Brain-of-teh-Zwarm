@@ -38,7 +38,7 @@ public class MainMenu: MonoBehaviour {
 		UnityEditor.EditorApplication.isPlaying = false;
 		#elif UNITY_WEBPLAYER
 		//Webplayer
-		//Application.OpenURL("https://games.blakcpinguin.de/");
+		Application.OpenURL("https://games.blackpinguin.de/BrainOfTehZwarm/play.html");
 		#else
 		//Standalone Build
 		Application.Quit();
