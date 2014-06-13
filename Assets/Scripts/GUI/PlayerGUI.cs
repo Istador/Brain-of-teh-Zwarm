@@ -21,10 +21,12 @@ public class PlayerGUI : MonoBehaviour {
 	void Start(){
 		//Bottom Left
 		Glyph g_run_img = new GImage(Resource.Texture["buttons/actionbutton_run"]);
+		Glyph g_druck_img = new GImage(Resource.Texture["buttons/actionbutton_druckwelle"]);
 		GButton g_run = new GButton(40*3, 40*3, g_run_img, null);
+		GButton g_druck = new GButton(40*3, 40*3, g_druck_img, null);
 		//g_run.Enabled = false;
 		g_run.Filled = false;
-		g_bl = GConcat.Concat(g_run);
+		g_bl = GConcat.Concat(g_run, g_druck);
 
 		//Bottom Right
 		Glyph g_int = new GInteger(() => {
