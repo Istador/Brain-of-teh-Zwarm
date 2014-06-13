@@ -24,22 +24,27 @@ public class PlayerGUI : MonoBehaviour {
 		Glyph g_druck_img = new GImage(Resource.Texture["buttons/actionbutton_druckwelle"]);
 		GButton g_run = new GButton(40*3, 40*3, g_run_img, null);
 		GButton g_druck = new GButton(40*3, 40*3, g_druck_img, null);
-		//g_run.Enabled = false;
+		//transparenter Hintergrund
 		g_run.Filled = false;
+		g_druck.Filled = false;
+		//ausschalten weil Button vorerst ohne Funktion
+		g_druck.Enabled = false;
+		//alle zusammensetzen zu einem Glyph
 		g_bl = GConcat.Concat(g_run, g_druck);
 
 		//Bottom Right
 		Glyph g_int = new GInteger(() => {
-			if(PlayerObject.I == null) return null;
+			if(PlayerObject.I == null) return 0;
 			else return PlayerObject.I.Brains;
 		});
 		Glyph g_brainz = GString.GetString(" Brainz ");
 		Glyph g_hp = new GHealthBar(150, 40, 3, ()=>PlayerObject.I);
-
+		//alle 3 zusammensetzen, einen unsichtbaren Rahmen drum zeichnen fürs (Padding)
 		GBordered g = new GBordered(GConcat.Concat(g_int, g_brainz, g_hp));
 		g.Enabled = false;
 		g.Border.all = 0.0;
 		g.Padding.all = 10.0;
+		//weiße Hintergrundfarve
 		g_br = new GFilled(Color.white, g);
 	}
 	
