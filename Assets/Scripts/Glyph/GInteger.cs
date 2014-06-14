@@ -1,47 +1,64 @@
 ﻿using UnityEngine;
-using System;
 
-public class GInteger : Glyph {
+public class GInteger : Glyph, IObserver {
 
-	Func<int?> f;
-	int? option = null;
+	private int? _value = null;
+	public int? Value {
+		get { return _value; }
+		private set {
+			//bei gleichem Wert keine Änderung
+			if(_value == value) return;
+			//Wert setzen
+			_value = value;
 
-	Glyph str;
-
-	public GInteger(Func<int?> f){
-		this.f = f;
-		recheck();
-	}
-
-	private bool recheckNeeded = true;
-
-	private void recheck(){
-		if(recheckNeeded){
-			option = f();
-			if(option != null)
-				str = GString.GetString(option.ToString());
+			if(Value != null)
+				str = GString.GetString(Value.ToString());
 			else
-				str = null;
-			recheckNeeded = false;
+				str = GString.GetString("");
 		}
 	}
+	
+	Glyph str;
 
-	public void Draw(double size, Vector2 pos){
-		recheck();
-		if(str != null)
-			str.Draw(size, pos);
-		recheckNeeded = true;
+	private string msg;
+
+	//Konstruktor
+	public GInteger(string msg){
+		this.msg = msg;
+
+		Value = (int?) Observer.I.Add(msg, this);
 	}
 
+	//Destruktor
+	~GInteger(){
+		Observer.I.Remove(msg, this);
+	}
+
+	public void ObserveUpdate(string msg, object x){
+		if(msg != this.msg) return;
+		Value = (int) x;
+	}
+
+
+
+	public void Draw(double size, Vector2 pos){
+		if(str != null)
+			str.Draw(size, pos);
+	}
+
+
+
 	public double Width(double size){
-		recheck();
 		if(str == null) return 0.0;
 		return str.Width(size);
 	}
 
+
+
 	public double Height(double size){
-		recheck();
 		if(str == null) return 0.0;
 		return str.Height(size);
 	}
+
+
 }

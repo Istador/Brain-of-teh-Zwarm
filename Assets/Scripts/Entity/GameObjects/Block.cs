@@ -64,7 +64,7 @@ public class Block : GeneralObject {
 	void OnTriggerEnter(Collider other) {
 		//Kollision mit Spieler
 		if(!PlayerInside && !PlayerLeaved && other.name == "Zombie_Hat"){
-			Debug.Log("nextBlock reached");
+			//Debug.Log("nextBlock reached");
 			
 			PlayerInside = true;
 			

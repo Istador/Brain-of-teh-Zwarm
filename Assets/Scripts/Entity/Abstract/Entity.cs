@@ -104,7 +104,7 @@ public abstract class Entity : GeneralObject {
 		//Runde float zum nächsten int
 		int dmg = System.Convert.ToInt32(damage.magnitude);
 		
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
+		//Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): "+dmg+" dmg received");
 		
 		//Trefferpunkte verringern
 		Health -= dmg;
@@ -136,7 +136,7 @@ public abstract class Entity : GeneralObject {
 	/// Lässt das Subjekt sterben, z.B. weil die HP auf 0 gefallen sind
 	/// </summary>
 	public virtual void Death(){
-		Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): death");
+		//Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): death");
 		
 		Destroy(gameObject);
 	}

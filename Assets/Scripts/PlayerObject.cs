@@ -2,10 +2,23 @@
 using System.Collections;
 
 public class PlayerObject : MovableEntity<Entity> {
-	
-	public int Brains { get; private set; }
-	
+
+
+
 	public PlayerObject() : base(150) {}
+
+
+
+	//Gehirnzähler mit Observer
+	private int brains = 0;
+	public int Brains {
+		get{ return brains; }
+		set { 
+			brains = value;
+			Observer.I.Update("Brains", Brains);
+		}
+	}
+
 
 
 	protected override void FixedUpdate () {
@@ -35,7 +48,6 @@ public class PlayerObject : MovableEntity<Entity> {
 		base.Start();
 
 		instance = this;
-		Brains = 0;
 
 		MaxSpeed = 2.4f;
 		MaxForce = 2.4f;
@@ -45,8 +57,7 @@ public class PlayerObject : MovableEntity<Entity> {
 		Steering.Wandering = true;
 		Steering.f_WanderFactor = 0.25f;
 
-		//TODO: Inputs verwenden
-		//Inputs.I.Register("Aktion1", (b)=>{if(b)Debug.Log("down"); else Debug.Log("up");});
+		Brains = 0;
 	}
 
 	public void AddToGroup(Zombie z){
@@ -62,6 +73,8 @@ public class PlayerObject : MovableEntity<Entity> {
 				Zombies[i] = z;
 				//informieren
 				z.Follow(this, Offsets[i]);
+				//momentan aktive beschleunigungseffekte übertragen
+				z.SpeedBonus += SpeedBonus;
 				return;
 			}
 		}

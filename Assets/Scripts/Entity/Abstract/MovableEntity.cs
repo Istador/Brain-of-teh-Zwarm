@@ -65,20 +65,35 @@ public abstract class MovableEntity<T> : Entity {
 		Steering.Stop();
 		Moving = Vector3.zero;
 	}
-	
-	
+
+
+
+	/// <summary>
+	/// SpeedBonus, um temporär die geschwindigkeit anpassen zu können
+	/// </summary>
+	public float SpeedBonus { get; set;}
+
+
 	
 	/// <summary>
 	/// maximale Geschwindigkeit
 	/// </summary>
-	public float MaxSpeed { get; set; }
+	public float MaxSpeed { 
+		get{ return _maxSpeed + SpeedBonus; }
+		set{ _maxSpeed = value; }
+	}
+	private float _maxSpeed;
 	
 	
 	
 	/// <summary>
 	/// maximale Kraft der Steering Behaviors
 	/// </summary>
-	public float MaxForce { get; set; }
+	public float MaxForce { 
+		get{ return _maxForce + SpeedBonus; }
+		set{ _maxForce = value; }
+	}
+	private float _maxForce;
 	
 	
 	
@@ -101,7 +116,8 @@ public abstract class MovableEntity<T> : Entity {
 		
 		//Steering Behavior Komonente erstellen
 		Steering = new SteeringBehaviors<T>(this);
-		
+
+		SpeedBonus = 0.0f;
 		MaxSpeed = 1.0f;
 		MaxForce = 1.0f;
 	}

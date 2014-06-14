@@ -87,8 +87,7 @@ public class Zombie : MovableEntity<Entity> {
 		Steering.f_WanderFactor = 0.15f;
 
 		//Schneller werden
-		MaxSpeed = 3.15f;
-		MaxForce = 3.15f;
+		SpeedBonus += 0.4f;
 
 		//in Formation
 		Steering.Offset = offset;

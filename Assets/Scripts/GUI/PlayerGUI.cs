@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class PlayerGUI : MonoBehaviour {
@@ -19,24 +20,29 @@ public class PlayerGUI : MonoBehaviour {
 
 
 	void Start(){
+		Action<bool> a1 = (start) => {
+			//beim ausführen erhöhen, danach verringern
+			float change = start ? +1f : -1f;
+			//Player beschleunigen
+			PlayerObject.I.SpeedBonus += change;
+			//Zombies beschleunigen
+			foreach(var zombie in PlayerObject.I.Zombies)
+				if(zombie != null)
+					zombie.SpeedBonus += change;
+		};
+
+		Action<bool> a2 = (start) => {
+			//TODO: Aktion Druckwelle - Nahe Gegner umwerfen
+		};
+
 		//Bottom Left
-		Glyph g_run_img = new GImage(Resource.Texture["buttons/actionbutton_run"]);
-		Glyph g_druck_img = new GImage(Resource.Texture["buttons/actionbutton_druckwelle"]);
-		GButton g_run = new GButton(40*3, 40*3, g_run_img, null);
-		GButton g_druck = new GButton(40*3, 40*3, g_druck_img, null);
-		//transparenter Hintergrund
-		g_run.Filled = false;
-		g_druck.Filled = false;
-		//ausschalten weil Button vorerst ohne Funktion
-		g_druck.Enabled = false;
+		GActionButton g_run = new GActionButton("Aktion 1", "buttons/actionbutton_run", a1, 1, 10f, 20f);
+		GActionButton g_druck = new GActionButton("Aktion 2", "buttons/actionbutton_druckwelle", a2, 0, 0f, 5f);
 		//alle zusammensetzen zu einem Glyph
 		g_bl = GConcat.Concat(g_run, g_druck);
 
 		//Bottom Right
-		Glyph g_int = new GInteger(() => {
-			if(PlayerObject.I == null) return 0;
-			else return PlayerObject.I.Brains;
-		});
+		Glyph g_int = new GInteger("Brains");
 		Glyph g_brainz = GString.GetString(" Brainz ");
 		Glyph g_hp = new GHealthBar(150, 40, 3, ()=>PlayerObject.I);
 		//alle 3 zusammensetzen, einen unsichtbaren Rahmen drum zeichnen fürs (Padding)

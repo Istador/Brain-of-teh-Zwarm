@@ -11,7 +11,7 @@ public class GButton : Glyph {
 
 	private static int buttons = 0;
 	private int id;
-	private String name;
+	private String name; //für den Mouseover-Effekt
 
 
 
@@ -88,12 +88,8 @@ public class GButton : Glyph {
 		}
 	}
 
-	public double Width(double size){
-		return gFill.Width(size);
-	}
+	public double Width(double size){ return gFill.Width(size); }
 
-	public double Height(double size){
-		return gFill.Height(size);
-	}
+	public double Height(double size){ return gFill.Height(size); }
 
 }
