@@ -5,7 +5,7 @@ using System.Collections;
 /// Diese Klasse Beschränkt die Bewegung auf die Horizontale,
 /// also Bewegung ist nur nach Links oder Rechts möglich
 /// 
-public abstract class MLeftRight<T> : MovableEntity<T> {
+public abstract class MLeftRight : MovableEntity {
 	
 	
 	

@@ -19,9 +19,9 @@ public class LevelScript : GeneralObject {
 	public Object[] zombies;
 	public Object[] humans;
 	public Object RandomEntity{ get{
-		int i = rnd.Next(zombies.Length + humans.Length);
+		int i = rnd.Next(zombies.Length + humans.Length*3); // *3 als balancing - mehr Menschen als Zombies
 		if(i < zombies.Length) return zombies[i];
-		return humans[i - zombies.Length];
+		return humans[(i - zombies.Length) % humans.Length];
 	} }
 		
 	

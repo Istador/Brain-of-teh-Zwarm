@@ -32,14 +32,25 @@ public class PlayerGUI : MonoBehaviour {
 		};
 
 		Action<bool> a2 = (start) => {
+			if(start && PlayerObject.I != null && !PlayerObject.I.IsDead){
+				//Spieler und seinen Schwarm heilen
+				PlayerObject.I.ApplyHeal(1000);
+				foreach(var z in PlayerObject.I.Zombies)
+					if(z != null && !z.IsDead)
+						z.ApplyHeal(1000);
+			}
+		};
+
+		Action<bool> a3 = (start) => {
 			//TODO: Aktion Druckwelle - Nahe Gegner umwerfen
 		};
 
 		//Bottom Left
 		GActionButton g_run = new GActionButton("Aktion 1", "buttons/actionbutton_run", a1, 1, 10f, 20f);
-		GActionButton g_druck = new GActionButton("Aktion 2", "buttons/actionbutton_druckwelle", a2, 0, 0f, 5f);
+		GActionButton g_heal = new GActionButton("Aktion 2", "buttons/actionbutton_health", a2, 1, 0f, 30f);
+		GActionButton g_druck = new GActionButton("Aktion 3", "buttons/actionbutton_druckwelle", a3, 0, 0f, 5f);
 		//alle zusammensetzen zu einem Glyph
-		g_bl = GConcat.Concat(g_run, g_druck);
+		g_bl = GConcat.Concat(g_run, g_heal, g_druck);
 
 		//Bottom Right
 		Glyph g_int = new GInteger("Brains");

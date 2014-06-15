@@ -30,7 +30,6 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Start Methode die einmal zum initialisieren aufgerufen wird.
 	/// </summary>
 	protected virtual void Start() {
-		
 	}
 	
 	
@@ -159,7 +158,18 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	
 	
 	// Audio
-	
+	private bool _audioAdded = false;
+	public AudioSource Audio {
+		get {
+			if(!_audioAdded){
+				_audioAdded = true;
+				gameObject.AddComponent<AudioSource>();
+			}
+			return audio;
+		}
+	}
+
+
 	/// <summary>
 	/// Spielt einen Sound an der aktuellen Position des Objektes ab
 	/// </summary>
@@ -167,8 +177,8 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Sound der abgespielt werden soll.
 	/// </param>
 	[System.Obsolete("use the sound name")]
-	public void PlaySound(AudioClip sound){
-		AudioSource.PlayClipAtPoint(sound, Pos);
+	public void PlaySound(AudioClip sound, float volume = 0.5f){
+		Audio.PlayOneShot(sound, volume);
 	}
 	
 	
@@ -179,8 +189,8 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Name des Sounds im Ordner Resources/Sounds/
 	/// </param>
 	[System.Obsolete("use the sound name")]
-	public void PlaySound(AudioClip sound, Vector3 pos){
-		AudioSource.PlayClipAtPoint(sound, pos);
+	public void PlaySound(AudioClip sound, Vector3 pos, float volume = 0.5f){
+		AudioSource.PlayClipAtPoint(sound, pos, volume);
 	}
 	
 	/// <summary>
@@ -189,8 +199,8 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// <param name='soundName'>
 	/// Name des Sounds im Ordner Resources/Sounds/
 	/// </param>
-	public void PlaySound(string soundName, Vector3 pos){
-		AudioSource.PlayClipAtPoint(Resource.Sound[soundName], pos);
+	public void PlaySound(string soundName, Vector3 pos, float volume = 0.5f){
+		AudioSource.PlayClipAtPoint(Resource.Sound[soundName], pos, volume);
 	}
 	
 	/// <summary>
@@ -199,8 +209,8 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// <param name='soundName'>
 	/// Name des Sounds im Ordner Resources/Sounds/
 	/// </param>
-	public void PlaySound(string soundName){
-		PlaySound(soundName, Pos);
+	public void PlaySound(string soundName, float volume = 0.5f){
+		Audio.PlayOneShot(Resource.Sound[soundName], volume);
 	}
 	
 	
@@ -636,7 +646,10 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Der Schadenswert
 	/// </param>
 	public void DoDamage(GameObject other, int damage){
-		Vector3 dmg = (other.collider.bounds.center - Pos).normalized * damage;
+		Vector3 richtung = (other.collider.bounds.center - Pos);
+		if(richtung.magnitude == 0.0) richtung = Vector3.up;
+
+		Vector3 dmg = richtung.normalized * damage;
 		other.SendMessage("ApplyDamage", dmg, SendMessageOptions.DontRequireReceiver);
 	}
 	/// <summary>

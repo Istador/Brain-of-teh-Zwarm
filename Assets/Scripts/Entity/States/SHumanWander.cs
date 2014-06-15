@@ -1,21 +1,32 @@
 ﻿using UnityEngine;
 
-public class SHumanWander : State<MovableEntity<Human>> {
+public class SHumanWander : State<MovableEntity> {
 
-	public override void Enter(MovableEntity<Human> owner){
+	public override void Enter(MovableEntity owner){
 		owner.Steering.Wandering = true;
+
+		//normal bewegen
+		owner.MaxSpeed = Human.f_normalSpeed;
+		owner.MaxForce = Human.f_normalSpeed;
 	}
 
-	public override void Exit(MovableEntity<Human> owner){
+	public override void Exit(MovableEntity owner){
 		owner.Steering.Wandering = false;
 	}
 
-	public override bool OnMessage(MovableEntity<Human> owner, Telegram msg){
+	public override bool OnMessage(MovableEntity owner, Telegram msg){
 		switch(msg.message){
 		case "flee":
-			owner.MoveFSM.ChangeState(SHumanFlee.I);
+			//wenn er keine Waffe hat -> abhauen
+			if( ((Human)owner).Weapon == Weapons.None)
+				owner.MoveFSM.ChangeState(SHumanFlee.I);
+			//ansonsten erst schießen
+			else
+				owner.MoveFSM.ChangeState(SHumanAim.I);
 			return true;
 		case "timeout":
+			return true;
+		case "reloaded":
 			return true;
 		default:
 			return false;

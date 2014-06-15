@@ -9,7 +9,7 @@ using System.Collections;
  * - Rotation zu Flugrichtung
  * 
 */
-public abstract class Projektile<T> : MovableEntity<T> {
+public abstract class Projektile : MovableEntity {
 	
 	
 	
@@ -106,7 +106,7 @@ public abstract class Projektile<T> : MovableEntity<T> {
 	/// </param>
 	protected virtual void OnTriggerEnter(Collider other) {
 		//nicht null, wenn Projektil von selben Typ
-		Projektile<T> p = other.gameObject.GetComponent<Projektile<T>>();
+		Projektile p = other.gameObject.GetComponent<Projektile>();
 		
 		//Nicht mit dem Besitzer dieses Projektiles oder eines seiner anderen Projektile kollidieren
 		if(other.gameObject != owner && (p==null || p.owner != owner ) ){

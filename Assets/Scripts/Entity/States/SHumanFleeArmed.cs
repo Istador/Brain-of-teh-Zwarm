@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SHumanFleeSlow : State<MovableEntity> {
+public class SHumanFleeArmed : State<MovableEntity> {
 
 	public override void Enter(MovableEntity owner){
 		//langsam bewegen
@@ -13,7 +13,7 @@ public class SHumanFleeSlow : State<MovableEntity> {
 		//nur bis zum Zeitpunkt x langsam weglaufen
 		MessageDispatcher.I.Dispatch(owner, "timeout", Human.f_slowTime);
 	}
-
+	
 	public override void Exit(MovableEntity owner){
 		owner.Steering.Fleeing = false;
 	}
@@ -21,13 +21,14 @@ public class SHumanFleeSlow : State<MovableEntity> {
 	public override bool OnMessage(MovableEntity owner, Telegram msg){
 		switch(msg.message){
 		case "flee":
+			//Zielen und abdrücken
+			owner.MoveFSM.ChangeState(SHumanAim.I);
 			return true;
 		case "timeout":
 			//Weglaufen beenden
 			owner.MoveFSM.ChangeState(SHumanWander.I);
 			return true;
 		case "reloaded":
-			SHumanAim.CheckDistance(owner);
 			return true;
 		default:
 			return false;
@@ -38,11 +39,11 @@ public class SHumanFleeSlow : State<MovableEntity> {
 	/**
 	 * Singleton
 	*/
-	private static SHumanFleeSlow instance;
-	private SHumanFleeSlow(){}
-	public static SHumanFleeSlow Instance{get{
-			if(instance==null) instance = new SHumanFleeSlow();
+	private static SHumanFleeArmed instance;
+	private SHumanFleeArmed(){}
+	public static SHumanFleeArmed Instance{get{
+			if(instance==null) instance = new SHumanFleeArmed();
 			return instance;
 		}}
-	public static SHumanFleeSlow I{get{return Instance;}}
+	public static SHumanFleeArmed I{get{return Instance;}}
 }

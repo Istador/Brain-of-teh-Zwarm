@@ -50,7 +50,7 @@ public class GActionButton : Glyph, MessageReceiver, IObserver {
 				MessageDispatcher.I.Dispatch(this, "cooldown ready", cooldown);
 			};
 
-		but = new GButton(40*3, 40*3, new GImage(Resource.Texture[icon]), a);
+		but = new GButton(200, 200, new GImage(Resource.Texture[icon]), a);
 		but.Enabled = false;
 		but.Filled = false;
 

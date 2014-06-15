@@ -18,9 +18,9 @@ public class Pause : MonoBehaviour {
 	
 	GString g_title;
 	Vector2 pos_title;
-	double size_title = 0.70;
+	double size_title = 0.65;
 	
-	double size_img = 0.2;
+	double size_img = 0.18;
 	GImage g_left;
 	Vector2 pos_left;
 	GImage g_right;
@@ -53,7 +53,7 @@ public class Pause : MonoBehaviour {
 			ResumeGame();
 		};
 
-		g_title = GString.GetString("Brain of teh Zwarm");
+		g_title = GString.GetString("Pause");
 		
 		g_left = new GImage(Resource.Texture["love_left"]);
 		g_right = new GImage(Resource.Texture["love_right"]);
@@ -147,14 +147,15 @@ public class Pause : MonoBehaviour {
 				(float)(sHeight - 20.0*s - g_left.Height(size_img * s))
 				);
 
+			double height = g_resume.Height(size_button * s);
 			pos_resume = new Vector2(
 				(float)((sWidth - g_resume.Width(size_button * s))/2.0),
-				(float)(sHeight/2.0 - g_resume.Height(size_button * s) - 10.0 * s)
+				(float)((sHeight - height)/2.0)
 				);
 
 			pos_menu = new Vector2(
 				(float)((sWidth - g_menu.Width(size_button * s))/2.0),
-				(float)(sHeight/2.0 + 10.0*s)
+				(float)((sHeight + height)/2.0 + 20.0*s)
 			);
 		}
 		
@@ -171,7 +172,7 @@ public class Pause : MonoBehaviour {
 
 			Resize();
 
-			//Brain of teh Zwarm
+			//Pause
 			g_title.Draw(size_title * s, pos_title);
 			
 			//Bilder

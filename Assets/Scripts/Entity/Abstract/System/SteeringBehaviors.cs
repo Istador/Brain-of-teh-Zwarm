@@ -11,21 +11,21 @@ using System.Collections;
  * Quelle:
  * Mat Buckland - Programming Game AI by Example
 */
-public class SteeringBehaviors<T> {
+public class SteeringBehaviors {
 	
 	
 	
 	/// <summary>
 	/// Besitzer dieser Instanz
 	/// </summary>
-	private MovableEntity<T> owner;
+	private MovableEntity owner;
 	
 	
 	
 	/// <summary>
 	/// Ziel das für einige Behaviors benötigt wird
 	/// </summary>
-	public MovableEntity<Entity> Target {get; set;}
+	public MovableEntity Target {get; set;}
 	
 	
 	
@@ -57,7 +57,7 @@ public class SteeringBehaviors<T> {
 	/// <param name='owner'>
 	/// Besitzer dieser Instanz
 	/// </param>
-	public SteeringBehaviors(MovableEntity<T> owner){
+	public SteeringBehaviors(MovableEntity owner){
 		this.owner = owner;
 	}
 	
@@ -172,7 +172,7 @@ public class SteeringBehaviors<T> {
 	/// <param name='evader'>
 	/// Objekt das abgefangen werden soll
 	/// </param>
-	private Vector3 Pursuit(MovableEntity<Entity> target){
+	private Vector3 Pursuit(MovableEntity target) {
 		Vector3 toEvader = target.Pos - owner.Pos;
 		
 		/*
@@ -197,7 +197,7 @@ public class SteeringBehaviors<T> {
 	/// <param name='evader'>
 	/// Der Verfolger dem man asuweichen will
 	/// </param>
-	private Vector3 Evade(MovableEntity<Entity> target){
+	private Vector3 Evade(MovableEntity target) {
 		Vector3 toPersuer = target.Pos - owner.Pos;
 		float LAT = toPersuer.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
 		return Flee(target.Pos + target.rigidbody.velocity * LAT);
@@ -238,7 +238,7 @@ public class SteeringBehaviors<T> {
 	/// <param name='evader'>
 	/// Objekt das abgefangen werden soll
 	/// </param>
-	private Vector3 OffsetPursuit(MovableEntity<Entity> target, Vector3 offset){
+	private Vector3 OffsetPursuit(MovableEntity target, Vector3 offset) {
 		Vector3 WorldOffset = target.Pos + offset;
 		
 		Vector3 ToOffset = WorldOffset - owner.Pos;
@@ -258,19 +258,20 @@ public class SteeringBehaviors<T> {
 		Vector3 pos = owner.Pos;
 		Vector3 npos = pos + force;
 
-		Debug.DrawLine(pos, npos, Color.green);
 		RaycastHit hit;
 		bool hitted = owner.Linecast(pos, npos, out hit, GeneralObject.Layer.Level);
 
 		//hat eine Wand getroffen
 		if(hitted){
+			Debug.DrawLine(pos, npos, Color.green);
+
 			//Vector3 overshoot = force.normalized * (Mathf.Abs(force.magnitude) - hit.distance);
 			Debug.DrawLine(hit.point, npos, Color.red);
-
+			f = (hit.point + hit.normal * Mathf.Abs(pos.z - hit.point.z) - pos).normalized;
 			//von der Wand abgehend
-			f = hit.normal * hit.distance;
+			f = (force.normalized * hit.distance) + f * (force.magnitude - hit.distance);
 
-			Debug.DrawLine(npos, npos+f, Color.yellow);
+			Debug.DrawLine(pos, pos+f, Color.blue);
 		}
 
 		return f;
@@ -370,7 +371,7 @@ public class SteeringBehaviors<T> {
 	/// </returns>
 	public Vector3 Calculate(){
 		Vector3 f = Vector3.zero;
-		
+
 		if(Seeking) f += Seek(TargetPos) * f_SeekFactor;
 		if(Fleeing) f += Flee(TargetPos) * f_FleeFactor;
 		if(Arriving) f += Arrive(TargetPos) * f_ArriveFactor;

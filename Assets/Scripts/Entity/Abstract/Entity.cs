@@ -39,13 +39,16 @@ public abstract class Entity : GeneralObject {
 		base.Start();
 		Health = MaxHealth;
 		HealthFactor = 1.0f;
+		IsDead = false;
 	}
 
 	protected override void Update(){
-		base.Start();
+		if(!IsDead){
+			base.Start();
 		
-		//Objekt faellt durch den Boden
-		if(Pos.y < -20f) Death();
+			//Objekt faellt durch den Boden
+			if(Pos.y < -20f) Death();
+		}
 	}
 	
 	
@@ -137,9 +140,12 @@ public abstract class Entity : GeneralObject {
 	/// </summary>
 	public virtual void Death(){
 		//Debug.Log(name+"<"+tag+">("+GetInstanceID()+"): death");
-		
+		IsDead = true;
 		Destroy(gameObject);
 	}
+
+	//Referenzen auf das objekt könnten noch existieren
+	public bool IsDead { get; private set; }
 	
 	
 	

@@ -6,7 +6,7 @@ using System.Collections;
 /// 
 /// Sie bewegen sich stur in eine Richtung und haben eine begrenzte Lebensdauer
 /// 
-public class PBullet : Projektile<PBullet> {
+public class PBullet : Projektile {
 	
 	
 	/// <summary>

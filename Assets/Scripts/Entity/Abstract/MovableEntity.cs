@@ -4,12 +4,12 @@ using System.Collections;
 /// 
 /// Abstrakte Oberklasse für bewegliche Gegner
 /// 
-public abstract class MovableEntity<T> : Entity {
+public abstract class MovableEntity : Entity {
 	
 	/// <summary>
 	/// Zustandsautomat für die Bewegung.
 	/// </summary>
-	public readonly StateMachine<MovableEntity<T>> MoveFSM;
+	public readonly StateMachine<MovableEntity> MoveFSM;
 	
 	/// <summary>
 	/// Richtung (Links/Rechts) in die der Gegner guckt.
@@ -29,7 +29,7 @@ public abstract class MovableEntity<T> : Entity {
 			//sonst die Instanzvariable
 			return _Moving;
 		}
-		private set{_Moving = value;}
+		set{_Moving = value;}
 	}
 	private Vector3 _Moving;
 	
@@ -100,7 +100,7 @@ public abstract class MovableEntity<T> : Entity {
 	/// <summary>
 	/// Steering Behavior Komponente, die den "Wunsch nach Bewegung" ausdrückt
 	/// </summary>
-	public readonly SteeringBehaviors<T> Steering;
+	public readonly SteeringBehaviors Steering;
 	
 	
 	
@@ -112,10 +112,10 @@ public abstract class MovableEntity<T> : Entity {
 	/// </param>
 	public MovableEntity(int maxHealth) : base(maxHealth){
 		//Zustandsautomaten erstellen
-		MoveFSM = new StateMachine<MovableEntity<T>>(this);
+		MoveFSM = new StateMachine<MovableEntity>(this);
 		
 		//Steering Behavior Komonente erstellen
-		Steering = new SteeringBehaviors<T>(this);
+		Steering = new SteeringBehaviors(this);
 
 		SpeedBonus = 0.0f;
 		MaxSpeed = 1.0f;
@@ -197,7 +197,7 @@ public abstract class MovableEntity<T> : Entity {
 	/// </param>
 	public override bool HandleMessage(Telegram msg){
 		//Move-Zustandsautomat
-		return MoveFSM.HandleMessage(msg);
+		return IsDead || MoveFSM.HandleMessage(msg);
 	}
 	
 	

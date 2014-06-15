@@ -12,7 +12,7 @@
  * Mat Buckland - Programming Game AI by Example
 */
 public class StateMachine<T> : MessageReceiver {
-	
+
 	
 	
 	/// <summary>
@@ -24,7 +24,7 @@ public class StateMachine<T> : MessageReceiver {
 	/// Der globale Zustand des Automatens
 	/// </summary>
 	public State<T> GlobalState {get; set;}
-	
+
 	/// <summary>
 	/// Der aktuelle Zustand des Automatens
 	/// </summary>
@@ -56,7 +56,7 @@ public class StateMachine<T> : MessageReceiver {
 	/// <param name='state'>
 	/// der neue Zustand zu dem gewechselt werden soll.
 	/// </param>
-	public void ChangeState(State<T> state){
+	public void ChangeState<X>(State<X> state) where X: T {
 		//wenn ein voriger Zustand existiert verlasse ihn
 		if(CurrentState!=null) CurrentState.Exit(owner);
 		
@@ -78,7 +78,7 @@ public class StateMachine<T> : MessageReceiver {
 	/// <param name='state'>
 	/// der neue Zustand zu dem gewechselt werden soll.
 	/// </param>
-	public void ChangeGlobalState(State<T> state){
+	public void ChangeGlobalState<X>(State<T> state) where X: T {
 		//wenn ein voriger Zustand existiert verlasse ihn
 		if(GlobalState!=null) GlobalState.Exit(owner);
 		//ersetze aktuellen Zustand durch den neuen Zustand

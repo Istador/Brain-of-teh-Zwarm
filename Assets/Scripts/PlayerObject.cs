@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerObject : MovableEntity<Entity> {
+public class PlayerObject : MovableEntity {
 
 
 
@@ -22,8 +22,20 @@ public class PlayerObject : MovableEntity<Entity> {
 
 
 	protected override void FixedUpdate () {
+		float ver = 0f;
+
+		//TouchScreen
+		if(Input.touchCount > 0){
+			Touch t = Input.GetTouch(0);
+			ver += t.deltaPosition.y / t.deltaTime * 4f;
+		}
+
 		//Tastatur
-		float ver = Input.GetAxis("Vertical");
+		ver += Input.GetAxis("Vertical");
+
+		//auf Wertebereich beschrenken
+		Utility.MinMax(ref ver, -1f, 1f);
+		
 		Vector3 x = new Vector3(0f, 0f, ver) * MaxSpeed;
 		Steering.TargetPos = Pos + x;
 
@@ -58,13 +70,21 @@ public class PlayerObject : MovableEntity<Entity> {
 		Steering.f_WanderFactor = 0.25f;
 
 		Brains = 0;
+
+		GameOver.startTime = System.DateTime.Now;
+
+		Inputs.I.Register("Aktion 3", (b)=>{if(b) DoDamage(this, 50);});
 	}
 
 	public void AddToGroup(Zombie z){
+		//wenn er uns bereits gehört ist nichts zu machen
+		if(z.IsPlayerControled) return;
+
 		//nicht erneut hinzufügen
-		foreach(Zombie other in Zombies){
-			if(z == other) return;
-		}
+		//foreach(Zombie other in Zombies){
+		//	if(z == other) return;
+		//}
+
 		//Suche freien Offset Platz
 		for(int i = 0; i < Zombies.Length; i++){
 			//Freier Platz gefunden
@@ -82,19 +102,14 @@ public class PlayerObject : MovableEntity<Entity> {
 		//nichts tun
 	}
 
-	public void Eat(Human h){
-		Brains++;
-		h.Death();
-		PlaySound("RCL/omnomnom");
-	}
 
 	
 	public override void Death(){
 		base.Death();
 		
-		//Spiel neu starten
+		//Game Over Menü
 		MessageDispatcher.I.EmptyQueue();
-		Application.LoadLevel(Application.loadedLevel);
+		Application.LoadLevel(2);
 	}
 	
 	

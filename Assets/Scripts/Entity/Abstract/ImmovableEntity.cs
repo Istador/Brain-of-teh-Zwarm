@@ -4,10 +4,10 @@ using System.Collections;
 /// 
 /// Abstrakte Oberklasse für unbewegliche Gegner
 /// 
-public abstract class ImmovableEntity<T> : Entity {
+public abstract class ImmovableEntity : Entity {
 	
 	
-	
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ImmovableEntity`1"/> class.
 	/// </summary>

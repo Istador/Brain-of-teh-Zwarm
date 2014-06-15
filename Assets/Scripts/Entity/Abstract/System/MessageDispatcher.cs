@@ -27,7 +27,8 @@ public class MessageDispatcher {
 	/// </param>
 	private void Discharge(Telegram msg){		
 		//Nachricht an MessageReceiver Methode übergeben
-		msg.receiver.HandleMessage(msg);
+		if(msg.receiver != null)
+			msg.receiver.HandleMessage(msg);
 	}
 	
 	

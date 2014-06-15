@@ -6,7 +6,8 @@ public static class Utility {
 	
 	
 	public static readonly System.Random Rnd = new System.Random();
-	
+
+
 	
 	
 	/// <summary>
@@ -116,7 +117,7 @@ public static class Utility {
 		GUI.Label(pos, text);
 		GUI.skin.label.normal.textColor = tmp;
 	}
-	
+
 	
 	
 	/// <summary>

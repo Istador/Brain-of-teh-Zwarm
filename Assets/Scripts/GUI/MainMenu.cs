@@ -11,9 +11,9 @@ public class MainMenu: MonoBehaviour {
 
 	GString g_title;
 	Vector2 pos_title;
-	double size_title = 0.70;
+	double size_title = 0.65;
 
-	double size_img = 0.2;
+	double size_img = 0.18;
 	GImage g_left;
 	Vector2 pos_left;
 	GImage g_right;
@@ -99,10 +99,9 @@ public class MainMenu: MonoBehaviour {
 			);
 
 			if(g_quit != null){
-				pos_start -= new Vector2(0f, (float)( height/2.0 + 10.0 * s ));
 				pos_quit = new Vector2(
 					(float)((sWidth - g_quit.Width(size_button * s))/2.0),
-					(float)(sHeight/2.0 + 10.0*s)
+					(float)((sHeight + height)/2 + 20.0*s)
 				);
 			}
 		}
@@ -134,7 +133,7 @@ public class MainMenu: MonoBehaviour {
 	void Update(){
 		if(Input.GetKeyDown(KeyCode.F)){
 			MessageDispatcher.I.EmptyQueue();
-			Application.LoadLevel(2);
+			Application.LoadLevel(3);
 		}
 	}
 

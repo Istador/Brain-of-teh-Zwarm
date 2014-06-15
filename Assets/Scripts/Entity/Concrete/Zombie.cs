@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Zombie : MovableEntity<Entity> {
+public class Zombie : MovableEntity {
 	
-	private static AudioClip[] sounds;
+	private static string[] sounds;
 	
 	
 	/// <summary>
@@ -13,13 +13,16 @@ public class Zombie : MovableEntity<Entity> {
 	/// </summary>
 	private static float f_soundProbability = 0.001f;
 	
-	
+
 	public Zombie() : base(100) {
-		MaxSpeed = 2.75f;
-		MaxForce = 2.75f;
+		MaxSpeed = 2.65f;
+		MaxForce = 2.65f;
 		Steering.Wandering = true;
 	}
-	
+
+
+
+	public bool IsPlayerControled { get; private set; }
 	
 	
 	private Material sprite;
@@ -28,29 +31,39 @@ public class Zombie : MovableEntity<Entity> {
 		
 	protected override void Start(){
 		base.Start();
-		
+
+		IsPlayerControled = false;
+
 		if(sounds == null){
-			sounds = new AudioClip[7]{
-				Resource.Sound["RCL/01_01"],
-				Resource.Sound["RCL/01_02"],
-				Resource.Sound["RCL/01_03"],
-				Resource.Sound["RCL/01_04"],
-				Resource.Sound["RCL/01_05"],
-				Resource.Sound["RCL/01_06"],
-				Resource.Sound["RCL/01_07"],
+			sounds = new string[7]{
+				"RCL/01_01",
+				"RCL/01_02",
+				"RCL/01_03",
+				"RCL/01_04",
+				"RCL/01_05",
+				"RCL/01_06",
+				"RCL/01_07",
 			};
 		}
 		
-		gameObject.AddComponent<AudioSource>();
-		
-		sprite = transform.GetChild(0).renderer.material;
+		Steering.WallAvoiding = true;
+
+		sprite = transform.GetChild(1).renderer.material;
 	}
 	
 	
 	
 	protected override void Update(){
+
+		//falls das Ziel nicht mehr existiert entferne es
+		if(Steering.Pursuing && ( Steering.Target == null || Steering.Target.IsDead)){
+			Steering.Target = null;
+			Steering.Pursuing = false;
+			Steering.f_WanderFactor = 1f;
+		}
+
 		base.Update();
-		
+
 		Vector2 tmp = sprite.mainTextureScale;
 		
 		//Guckt nach rechts
@@ -76,28 +89,39 @@ public class Zombie : MovableEntity<Entity> {
 	
 	
 	private void PlayRandomSound(){
-		if(sounds != null && audio != null && !audio.isPlaying)
-			audio.PlayOneShot(sounds[rnd.Next(sounds.Length)]);
+		if(sounds != null && !Audio.isPlaying)
+			PlaySound(sounds[rnd.Next(sounds.Length)]);
 	}
-	
+
+
+	public void ChaseHuman(Human h){
+		if(!IsPlayerControled){
+			//Menschen jagen
+			Steering.Target = h;
+			Steering.Pursuing = true;
+			Steering.f_PursueFactor = 0.85f;
+			Steering.f_WanderFactor = 0.15f;
+		}
+	}
 	
 	
 	public void Follow(PlayerObject player, Vector3 offset){
 		//Steering.Wandering = false;
 		Steering.f_WanderFactor = 0.15f;
 
+		//nicht mehr menschen verfolgen
+		Steering.Pursuing = false;
+
 		//Schneller werden
-		SpeedBonus += 0.4f;
+		SpeedBonus += 0.5f;
 
 		//in Formation
 		Steering.Offset = offset;
-		Steering.Target = (MovableEntity<Entity>)player;
+		Steering.Target = player;
 		Steering.OffsetPursuing = true;
 		Steering.f_OffPursueFactor = 0.85f;
 
 		//als Mitglied der Gruppe darf man Menschen fressen
-		GameObject t = Instantiate("PlayerTrigger");
-		t.transform.parent = transform;
-
+		IsPlayerControled = true;
 	}
 }
