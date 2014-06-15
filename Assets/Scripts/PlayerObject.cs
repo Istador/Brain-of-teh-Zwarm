@@ -27,7 +27,7 @@ public class PlayerObject : MovableEntity {
 		//TouchScreen
 		if(Input.touchCount > 0){
 			Touch t = Input.GetTouch(0);
-			ver += t.deltaPosition.y / t.deltaTime * 4f;
+			ver += t.deltaPosition.y * 1000f;
 		}
 
 		//Tastatur
