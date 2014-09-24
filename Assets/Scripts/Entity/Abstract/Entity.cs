@@ -2,7 +2,7 @@
 using System.Collections;
 
 /// 
-/// Abstrakte Oberklasse für alle lebende Spiel-Objekte im Spiel
+/// Abstrakte Oberklasse für alle lebenden Spiel-Objekte im Spiel
 /// 
 /// Trefferpunkte und Sterben
 /// 
@@ -44,7 +44,7 @@ public abstract class Entity : GeneralObject {
 
 	protected override void Update(){
 		if(!IsDead){
-			base.Start();
+			base.Update();
 		
 			//Objekt faellt durch den Boden
 			if(Pos.y < -20f) Death();

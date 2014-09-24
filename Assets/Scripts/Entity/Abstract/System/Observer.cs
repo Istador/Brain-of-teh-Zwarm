@@ -18,6 +18,7 @@ public class Observer {
 	//letzter gemerkter Wert
 	private Dictionary<string, object> cache = new Dictionary<string, object>();
 
+	//Registriert einen, von potentiell vielen, Beobachtern (obj) für ein bestimmtes Ereignis(msg)
 	public object Add(string msg, IObserver obj){
 
 		//set bekommen
@@ -37,11 +38,13 @@ public class Observer {
 		return null;
 	}
 
+	//Trägt einen Beobachter wieder aus
 	public void Remove(string msg, IObserver obj){
 		if(map.ContainsKey(msg))
 			map[msg].Remove(obj);
 	}
 
+	//sendet an allen Beobachtern des Events (msg) die msg und das Objekt (z.B. einen aktualisierten Wert)
 	public void Update(string msg, object value){
 		//Wert merken
 		cache[msg] = value;
