@@ -105,24 +105,14 @@ public class GBordered : Glyph {
 
 
 
-	private Dictionary<double, double> widths = new Dictionary<double, double>();
 	public double Width(double size){
-		if(!widths.ContainsKey(size)){
-			double w = g.Width(size) + (Margin.Width + Border.Width + Padding.Width) * size;
-			widths.Add(size, w);
-		}
-		return widths[size];
+		return g.Width(size) + (Margin.Width + Border.Width + Padding.Width) * size;
 	}
 
 
 
-	private Dictionary<double, double> heights = new Dictionary<double, double>();
 	public double Height(double size){
-		if(!heights.ContainsKey(size)){
-			double h = g.Height(size) + (Margin.Height + Border.Height + Padding.Height) * size;
-			heights.Add(size, h);
-		}
-		return heights[size];
+		return g.Height(size) + (Margin.Height + Border.Height + Padding.Height) * size;
 	}
 
 
