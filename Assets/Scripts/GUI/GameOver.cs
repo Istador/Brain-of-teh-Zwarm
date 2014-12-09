@@ -8,6 +8,8 @@ public class GameOver: MonoBehaviour {
 
 	public static int Brains = 0;
 	public static System.DateTime startTime = System.DateTime.Now;
+	//TODO: betrügen möglich mittels Pause
+	//TODO: wird das irgendwo neu gesetzt bei einem neuem Spiel?
 
 	double sHeight;
 	double sWidth;
