@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class PlayerGUI : MonoBehaviour {
+public class PlayerGUI : MonoBehaviour, IObserver {
 
 	float sHeight;
 	float sWidth;
@@ -53,6 +53,7 @@ public class PlayerGUI : MonoBehaviour {
 		g_bl = GConcat.Concat(g_run, g_heal, g_druck);
 
 		//Bottom Right
+		Observer.I.Add("Brains", this);
 		Glyph g_int = new GInteger("Brains");
 		Glyph g_brainz = GString.GetString(" Brainz ");
 		Glyph g_hp = new GHealthBar(150, 40, 3, ()=>PlayerObject.I);
@@ -65,27 +66,37 @@ public class PlayerGUI : MonoBehaviour {
 		g_br = new GFilled(Color.white, g);
 	}
 	
-	void Resize(){
-		if(sWidth != Screen.width || sHeight != Screen.height){
-			sWidth = Screen.width;
-			sHeight = Screen.height;
-			
-			float aspect = (sWidth / sHeight) / (1680f/1050f);
-			s = (sHeight / 1050f) * aspect;
-
-			pos_bl = new Vector2(
-				0f,
-				(float)(sHeight - g_bl.Height(size_bl * s))
-			);
-
-			pos_br = new Vector2(
-				(float)(sWidth - g_br.Width(size_br * s)),
-				(float)(sHeight - g_br.Height(size_br * s))
-			);
-		}
-		
+	private bool resizeNeeded = false;
+	
+	public void ObserveUpdate(string msg, object x){
+		if(msg != "Brains") return;
+		resizeNeeded = true;
 	}
+	
+	void Resize(){
+		if(sWidth != Screen.width || sHeight != Screen.height || resizeNeeded){
+			ResizeNow();
+			resizeNeeded = false;
+		}
+	}
+	
+	private void ResizeNow(){
+		sWidth = Screen.width;
+		sHeight = Screen.height;
+			
+		float aspect = (sWidth / sHeight) / (1680f/1050f);
+		s = (sHeight / 1050f) * aspect;
 
+		pos_bl = new Vector2(
+			0f,
+			(float)(sHeight - g_bl.Height(size_bl * s))
+		);
+
+		pos_br = new Vector2(
+			(float)(sWidth - g_br.Width(size_br * s)),
+			(float)(sHeight - g_br.Height(size_br * s))
+		);
+	}
 	
 	void OnGUI(){
 		//Spiel ist nicht pausiert

@@ -76,7 +76,7 @@ NavMeshSettings:
   m_NavMesh: {fileID: 0}
 --- !u!1 &2107663615
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 8
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 4
@@ -93,7 +93,7 @@ GameObject:
   m_IsActive: 1
 --- !u!114 &2107663616
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 8
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2107663615}
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!20 &2107663619
 Camera:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 8
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2107663615}
@@ -136,7 +136,7 @@ Camera:
   m_StereoSeparation: .0219999999
 --- !u!4 &2107663620
 Transform:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 8
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2107663615}
