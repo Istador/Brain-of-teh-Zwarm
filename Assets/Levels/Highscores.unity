@@ -94,8 +94,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 2107663620}
   - 20: {fileID: 2107663619}
-  - 114: {fileID: 2107663616}
   - 81: {fileID: 2107663617}
+  - 114: {fileID: 2107663616}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2107663615}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f2916e1cd581b94f993c76ccf495c56, type: 3}
+  m_Script: {fileID: 11500000, guid: 5481583cea42e3d479feb93b1714a205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!81 &2107663617

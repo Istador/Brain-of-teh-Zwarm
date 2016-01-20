@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections;
 
 /*
- * Abstrakte Oberklasse für Projektile von Gegnern
- * Gemeinsam für alle Projektile:
+ * Abstrakte Oberklasse fÃ¼r Projektile von Gegnern
+ * Gemeinsam fÃ¼r alle Projektile:
  * - Schaden Verursachen 
  * - Sterben wenn sie selbst Schaden erleiden (1 HP)
  * - Rotation zu Flugrichtung
@@ -63,7 +63,7 @@ public abstract class Projektile : MovableEntity {
 	
 	
 	/// <summary>
-	/// Ziel für Steering Behaviors setzen, Rotiere zum Ziel
+	/// Ziel fÃ¼r Steering Behaviors setzen, Rotiere zum Ziel
 	/// </summary>
 	protected override void FixedUpdate() {
 		//Seek-Ziel auf Position setzen
@@ -81,12 +81,12 @@ public abstract class Projektile : MovableEntity {
 	/// Rotiere das Projektil in Bewegungsrichtung
 	/// </summary>
 	protected void Rotate(){
-		Vector3 rotate = rigidbody.velocity.Equals(Vector3.zero) ? TargetPos - Pos : rigidbody.velocity ;
+		Vector3 rotate = GetComponent<Rigidbody>().velocity.Equals(Vector3.zero) ? TargetPos - Pos : GetComponent<Rigidbody>().velocity ;
 		
 		//Rotiere zum Ziel entlang der Z-Achse
 		transform.rotation = Quaternion.LookRotation(rotate, zvector);
 		
-		//Drehe Sprite um 90°
+		//Drehe Sprite um 90Â°
 		transform.Rotate(-90.0f, 0.0f, -90.0f);
 	}
 	

@@ -14,7 +14,7 @@ public class Wall : RandomObject {
 	protected override void Start(){
 		
 		//Zufällige Wand-Textur auswählen
-		transform.GetChild(0).gameObject.renderer.materials = RandomWall;
+		transform.GetChild(0).gameObject.GetComponent<Renderer>().materials = RandomWall;
 		
 		base.Start();
 	}

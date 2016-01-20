@@ -2,44 +2,45 @@
 using UnityEngine.SceneManagement;
 using System;
 
-//using System.Collections;
-//using System.Reflection;
+public class Credits: MonoBehaviour {
 
-public class GameOver: MonoBehaviour {
 
-	public static int Brains = 0;
-	
+
 	double sHeight;
 	double sWidth;
 	double s;
 
+	static double size_title = 0.65;
 	GString g_title;
 	Vector2 pos_title;
-	double size_title = 0.65;
 
-	double size_img = 0.18;
-	GImage g_left;
-	Vector2 pos_left;
-	GImage g_right;
-	Vector2 pos_right;
+	static double size_img = 0.18;
+	GImage g_left, g_right;
+	Vector2 pos_left, pos_right;
 
-	double size_button = 1.5;
+	static double size_button = 1.5;
 	Glyph g_main;
 	Vector2 pos_main;
 
-	double size_text = 0.3;
+	static double size_subtitle = 0.30;
+	static double size_text = 0.30;
+	static double size_ava = 0.35;
+
 
 	void Start(){
-
+		
 		Action<GButton> a_menu = (b) => {
-			Brains = 0;
 			//Nachrichtenwarteschlange leeren
 			MessageDispatcher.I.EmptyQueue();
 			//Hauptmenü laden
 			SceneManager.LoadScene("Levels/MainMenu");
 		};
 
-		g_title = GString.GetString("Game Over", size_title);
+		Action<GButton> a_www = (b) => {
+			Application.OpenURL("https://rcl.blackpinguin.de/");
+		};
+
+		g_title = GString.GetString("Credits", size_title);
 
 		g_left = new GImage(Resource.Texture["love_left"], size_img);
 		g_right = new GImage(Resource.Texture["love_right"], size_img);
@@ -49,20 +50,34 @@ public class GameOver: MonoBehaviour {
 		g_menu.Padding.all = 10.0;
 		g_menu.Border.all = 4.0;
 
-		//Zeit überlebt
-		TimeSpan rt = Pause.Runtime;
-		Glyph g_alive = GString.GetString("Zeit: "+Utility.TimeToString(rt), size_text);
+		GButton g_www = new GButton(GString.GetString("https://rcl.blackpinguin.de/", size_text), a_www);
+		g_www.Border.all = 0.0;
+		g_www.Border.bottom = 5.0;
+		g_www.Filled = false;
 
-		//Anzahl Gehirne
-		Glyph g_brains = GString.GetString(Brains+ (Brains != 1 ? " Brainz erbeutet" : " Brain erbeutet"), size_text);
+		GImage g_ava = new GImage(Resource.Texture["avatar"], size_ava);
+		Glyph g_desc =
+			GVConcat.Concat(
+				GString.GetString("Robin Christopher Ladiges", size_text * 1.2)
+				, g_www
+				, GString.GetString("(c) 2013 - 2016", size_text * 0.8)
+			)
+			.Align(HorAlignment.left)
+			.Space(20.0)
+		;
 
-		g_main = GVConcat.Concat(g_brains, g_alive, g_menu)
+		Glyph g_me = GConcat.Concat(g_ava, g_desc).Align(VertAlignment.middle).Space(20.0);
+		g_main =
+			GVConcat.Concat(
+				GString.GetString("This game was made by:", size_subtitle),
+				g_me,
+				g_menu
+			)
 			.Align(HorAlignment.center)
 			.Space(40.0)
 		;
-
-		Highscores.Add(Brains, rt);
 	}
+
 
 
 
@@ -81,15 +96,14 @@ public class GameOver: MonoBehaviour {
 
 			pos_left = new Vector2(
 				(float)( 20.0 * s ),
-				(float)(sHeight - 20.0*s - g_left.Height(s))
+				(float)(sHeight - 20.0 * s - g_left.Height(s))
 			);
 
 			pos_right = new Vector2(
-				(float)(sWidth - 20.0*s - g_left.Width(s)),
-				(float)(sHeight - 20.0*s - g_left.Height(s))
-				);
+				(float)(sWidth - 20.0 * s - g_left.Width(s)),
+				(float)(sHeight - 20.0 * s - g_left.Height(s))
+			);
 
-			
 			pos_main = new Vector2(
 				(float)((sWidth - g_main.Width(s)) * 0.5),
 				(float)((sHeight - g_main.Height(s)) * 0.5)
@@ -106,12 +120,12 @@ public class GameOver: MonoBehaviour {
 		//Game Over
 		g_title.Draw(s, pos_title);
 
+		//Main
+		g_main.Draw(s, pos_main);
+
 		//Bilder
 		g_left.Draw(s, pos_left);
 		g_right.Draw(s, pos_right);
-
-		//Hauptmenü
-		g_main.Draw(s, pos_main);
 	}
 
 

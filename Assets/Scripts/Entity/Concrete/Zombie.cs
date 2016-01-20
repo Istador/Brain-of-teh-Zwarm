@@ -48,7 +48,7 @@ public class Zombie : MovableEntity {
 		
 		Steering.WallAvoiding = true;
 
-		sprite = transform.GetChild(1).renderer.material;
+		sprite = transform.GetChild(1).GetComponent<Renderer>().material;
 	}
 	
 	
@@ -67,7 +67,7 @@ public class Zombie : MovableEntity {
 		Vector2 tmp = sprite.mainTextureScale;
 		
 		//Guckt nach rechts
-		if( IsRight(Pos + rigidbody.velocity) )
+		if( IsRight(Pos + GetComponent<Rigidbody>().velocity) )
 			//Textur nicht vertikal spiegeln
 			tmp = new Vector2( Mathf.Abs(tmp.x), tmp.y);
 		else

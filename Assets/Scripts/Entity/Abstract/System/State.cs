@@ -1,9 +1,16 @@
+public interface IState<in T> {
+	void Enter(T owner);
+	void Execute(T owner);
+	void Exit(T owner);
+	bool OnMessage(T owner, Telegram msg);
+}
+
 /**
  * ein einzelner Zustand
  * 
  * Die Methoden die nicht benötigt werden können weggelassen werden.
 */
-public abstract class State<T> {
+public abstract class State<T> : IState<T> {
 	
 	
 	

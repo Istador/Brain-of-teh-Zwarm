@@ -16,7 +16,7 @@ public abstract class AbstractFont {
 public class WhiteboaRdCL : AbstractFont {
 	
 	//abstand zwischen einzelnen Zeichen
-	private const double charSpacing = 1.0; // 1 pixel
+	private const double charSpacing = 1.5; // 1 pixel
 	//pixel um die sich die Breite von einzelnen Zeichen erhöht
 	private const double widthSpacing = charSpacing * 2.0;
 	
@@ -58,12 +58,15 @@ public class WhiteboaRdCL : AbstractFont {
 		0.20333333, 0.21333333, 0.23333333, // ä, ö, ü
 		0.18666667,							// ß
 
-		0, 0, 0,							// ...
-		0, 0, 0, 0, 0, 0,					// ...
+		0.32333333, 0.33666667, 0.31666667, 0.35666667,				// ., :, ,, ;
+		0.40333333, 0.29333333, 0.20000000, 0.20000000, 0.20000000,	// !, ?,+, -, _
 		
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		// ...
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		// ...
-		0, 0, 0, 0, 0, 0.25000000,			// ..., Space
+		0.18666667, 0.27666667, 0.32000000, 0.36333333,	// / \ ( )
+		0.29666667, 0.32000000, 0.26666667, 0.29000000,	// { } [ ]
+
+		0, 0,										// ...
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,				// ...
+		0, 0, 0, 0, 0.13666667, 0.25000000,			// ..., ♡, Space
 	};
 	
 	//width of char without whitespace
@@ -82,7 +85,7 @@ public class WhiteboaRdCL : AbstractFont {
 		0.50666667, 0.48000000, 0.66666667, 0.45333333, 0.54666667,	// p-t
 		0.56000000, 0.50666667, 0.77333333, 0.44000000, 0.45333333,	// u-y
 		0.50666667,													// x
-		
+
 		0.62000000, 0.44666667, 0.54000000, 0.40000000, 0.62666667,	// 0-4
 		0.50666667, 0.54000000, 0.66000000, 0.65333333, 0.42000000,	// 5-9
 		
@@ -90,12 +93,15 @@ public class WhiteboaRdCL : AbstractFont {
 		0.59333333, 0.57333333, 0.53333333, // ä, ö, ü
 		0.62666666,							// ß
 
-		1, 1, 1, 						// ...
-		1, 1, 1, 1, 1, 1,				// ...
+		0.35333333, 0.32666667, 0.36666667, 0.28666667,				// . : , ;
+		0.19333333, 0.41333333, 0.60000000, 0.60000000, 0.60000000,	// ! ? + - _
 
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 	// ...
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 	// ...
-		1, 1, 1, 1, 1, 0.50000000		// ..., Space
+		0.62666667, 0.44666667, 0.36000000, 0.27333333,	// / \ ( )
+		0.40666667, 0.36000000, 0.46666667, 0.42000000,	// { } [ ]
+
+		1, 1,								 	// ...
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 			// ...
+		1, 1, 1, 1, 0.72666666, 0.50000000		// ..., ♡, Space
 	};
 	
 	
@@ -146,6 +152,11 @@ public class WhiteboaRdCL : AbstractFont {
 	
 	
 	private int index(char c){
+		// ABCDEFGHIJKLMNOPQRSTUVWXYZ
+		// abcdefghijklmnopqrstuvwxyz
+		// 0123456789ÄÖÜäöüß.:,;!?+-_
+		// /\(){}[]                  
+
 		if('A' <= c && c <= 'Z') return (c-'A');
 		if('a' <= c && c <= 'z') return 26+(c-'a');
 		if('0' <= c && c <= '9') return 2*26+(c-'0');
@@ -157,7 +168,27 @@ public class WhiteboaRdCL : AbstractFont {
 		case 'ö': return 2*26+14;
 		case 'ü': return 2*26+15;
 		case 'ß': return 2*26+16;
-		default:  return 4*26-1;
+		case '.': return 2*26+17;
+		case ':': return 2*26+18;
+		case ',': return 2*26+19;
+		case ';': return 2*26+20;
+		case '!': return 2*26+21;
+		case '?': return 2*26+22;
+		case '+': return 2*26+23;
+		case '-': return 2*26+24;
+		case '_': return 2*26+25;
+
+		case '/': return 3*26+0;
+		case '\\':return 3*26+1;
+		case '(': return 3*26+2;
+		case ')': return 3*26+3;
+		case '{': return 3*26+4;
+		case '}': return 3*26+5;
+		case '[': return 3*26+6;
+		case ']': return 3*26+7;
+
+		case '♡': return 3*26+24; // ♡
+		default:  return 3*26+25; // space
 		}
 	}
 	

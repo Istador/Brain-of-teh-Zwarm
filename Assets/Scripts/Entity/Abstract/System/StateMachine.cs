@@ -48,7 +48,7 @@ public class StateMachine<T> : MessageReceiver {
 	}
 	
 	
-	
+
 	/// <summary>
 	/// Ändert den aktuellen Zustand des Automatens.
 	/// ruft Exit() des alten und Enter() des neuen Zustands auf.
@@ -56,14 +56,14 @@ public class StateMachine<T> : MessageReceiver {
 	/// <param name='state'>
 	/// der neue Zustand zu dem gewechselt werden soll.
 	/// </param>
-	public void ChangeState<X>(State<X> state) where X: T {
+	public void ChangeState(State<T> state) {
 		//wenn ein voriger Zustand existiert verlasse ihn
 		if(CurrentState!=null) CurrentState.Exit(owner);
 		
 		//merke aktuellen Zustand als alten Zustand
 		PreviousState = CurrentState;
 		//ersetze aktuellen Zustand durch den neuen Zustand
-		CurrentState = state;
+				CurrentState = state;
 		
 		//betrete den neuen Zustand
 		if(CurrentState!=null) CurrentState.Enter(owner);

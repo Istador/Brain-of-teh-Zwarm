@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class PlayerObject : MovableEntity {
@@ -42,7 +43,7 @@ public class PlayerObject : MovableEntity {
 		base.FixedUpdate();
 
 		//konstante Bewegung nach rechts
-		rigidbody.AddForce(new Vector3(MaxSpeed, 0f, 0f), ForceMode.Impulse);
+		GetComponent<Rigidbody>().AddForce(new Vector3(MaxSpeed, 0f, 0f), ForceMode.Impulse);
 	}
 	
 	
@@ -70,8 +71,6 @@ public class PlayerObject : MovableEntity {
 		Steering.f_WanderFactor = 0.25f;
 
 		Brains = 0;
-
-		GameOver.startTime = System.DateTime.Now;
 
 		Inputs.I.Register("Aktion 3", (b)=>{if(b) DoDamage(this, 50);});
 	}
@@ -109,7 +108,7 @@ public class PlayerObject : MovableEntity {
 		
 		//Game Over Menü
 		MessageDispatcher.I.EmptyQueue();
-		Application.LoadLevel(2);
+		SceneManager.LoadScene("Levels/GameOver");
 	}
 	
 	

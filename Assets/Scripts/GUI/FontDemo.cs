@@ -26,7 +26,7 @@ public class FontDemo : MonoBehaviour {
 		g_title = GString.GetString("Brain of teh Zwarm");
 		g_upper = GString.GetString("AÄBCDEFGHIJKLMNOÖPQRSßTUÜVWZYX");
 		g_lower = GString.GetString("aäbcdefghijklmnoöpqrstuüvwxyz");
-		g_numeric = GString.GetString("0123456789");
+		g_numeric = GString.GetString("0123456789 .:,;!?+-_/\\(){}[] ♡");
 
 		g_user = GString.GetString("");
 	}

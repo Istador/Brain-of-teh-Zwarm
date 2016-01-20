@@ -81,8 +81,8 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// <c>true</c> wenn sichtbar; ansonsten, <c>false</c>.
 	/// </value>
 	public bool Visible {
-		get{return renderer.enabled;}
-		set{renderer.enabled = value;}
+		get{return GetComponent<Renderer>().enabled;}
+		set{GetComponent<Renderer>().enabled = value;}
 	}
 	
 	
@@ -165,7 +165,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 				_audioAdded = true;
 				gameObject.AddComponent<AudioSource>();
 			}
-			return audio;
+			return GetComponent<AudioSource>();
 		}
 	}
 
@@ -274,22 +274,22 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Makes the collision detection system ignore all collisions between this and coll.
 	/// </summary>
 	public void IgnoreCollision(Collider coll, bool ignore = true){
-		Physics.IgnoreCollision(collider, coll, ignore);
-		Physics.IgnoreCollision(coll, collider, ignore);
+		Physics.IgnoreCollision(GetComponent<Collider>(), coll, ignore);
+		Physics.IgnoreCollision(coll, GetComponent<Collider>(), ignore);
 	}
 	
 	/// <summary>
 	/// Makes the collision detection system ignore all collisions between this and coll.
 	/// </summary>
 	public void IgnoreCollision(GameObject coll, bool ignore = true){
-		IgnoreCollision(coll.collider, ignore);
+		IgnoreCollision(coll.GetComponent<Collider>(), ignore);
 	}
 	
 	/// <summary>
 	/// Makes the collision detection system ignore all collisions between this and coll.
 	/// </summary>
 	public void IgnoreCollision(GeneralObject coll, bool ignore = true){
-		IgnoreCollision(coll.collider, ignore);
+		IgnoreCollision(coll.GetComponent<Collider>(), ignore);
 	}
 	
 	
@@ -300,7 +300,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 		return Linecast(Pos, pos, layerMask);
 	}
 	public bool Linecast(GameObject obj, Layer layerMask = Layer.All){
-		return Linecast(Pos, obj.collider.bounds.center, layerMask);
+		return Linecast(Pos, obj.GetComponent<Collider>().bounds.center, layerMask);
 	}
 	public bool Linecast(GeneralObject obj, Layer layerMask = Layer.All){
 		return Linecast(Pos, obj.Pos, layerMask);
@@ -309,7 +309,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 		return Linecast(Pos, pos, out hitInfo, layerMask);
 	}
 	public bool Linecast(GameObject obj, out RaycastHit hitInfo, Layer layerMask = Layer.All){
-		return Linecast(Pos, obj.collider.bounds.center, out hitInfo, layerMask);
+		return Linecast(Pos, obj.GetComponent<Collider>().bounds.center, out hitInfo, layerMask);
 	}
 	public bool Linecast(GeneralObject obj, out RaycastHit hitInfo, Layer layerMask = Layer.All){
 		return Linecast(Pos, obj.Pos, out hitInfo, layerMask);
@@ -344,22 +344,22 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// <summary>
 	/// Position des Objektes in der Spielwelt basierend auf der Collidermittelpunkt.
 	/// </summary>
-	public Vector3 Pos { get{return collider.bounds.center;} }
+	public Vector3 Pos { get{return GetComponent<Collider>().bounds.center;} }
 	
 	/// <summary>
 	/// Position eines anderen Objektes
 	/// </summary>
-	public Vector3 Posi(GameObject other){ return other.collider.bounds.center; }
+	public Vector3 Posi(GameObject other){ return other.GetComponent<Collider>().bounds.center; }
 	
 	/// <summary>
 	/// Breite des Objektes in der Spielwelt basierend auf dem Collider
 	/// </summary>
-	public float Width { get{return collider.bounds.size.x;} }
+	public float Width { get{return GetComponent<Collider>().bounds.size.x;} }
 	
 	/// <summary>
 	/// Höhe des Objektes in der Spielwelt basierend auf dem Collider
 	/// </summary>
-	public float Height { get{return collider.bounds.size.y;} }
+	public float Height { get{return GetComponent<Collider>().bounds.size.y;} }
 	
 	
 	
@@ -378,7 +378,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Ob ein anderes Objekt rechts von diesem Objekt ist.
 	/// </summary>
 	public bool IsRight(GameObject obj){
-		return IsRight(obj.collider.bounds.center);
+		return IsRight(obj.GetComponent<Collider>().bounds.center);
 	}
 	/// <summary>
 	/// Ob ein anderes Objekt rechts von diesem Objekt ist.
@@ -411,7 +411,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Ob ein anderes Objekt rechts von diesem Objekt ist.
 	/// </summary>
 	public bool IsLeft(GameObject obj){
-		return IsLeft(obj.collider.bounds.center);
+		return IsLeft(obj.GetComponent<Collider>().bounds.center);
 	}
 	/// <summary>
 	/// Ob ein anderes Objekt links von diesem Objekt ist.
@@ -444,7 +444,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Ob ein anderes Objekt über diesem Objekt ist.
 	/// </summary>
 	public bool IsOver(GameObject obj){
-		return IsOver(obj.collider.bounds.center);
+		return IsOver(obj.GetComponent<Collider>().bounds.center);
 	}
 	/// <summary>
 	/// Ob ein anderes Objekt über diesem Objekt ist.
@@ -546,7 +546,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Das Objekt zu dem die Distanz ermittelt werden soll
 	/// </param>
 	public float DistanceTo(GameObject obj){
-		return DistanceTo(obj.collider.bounds.center);
+		return DistanceTo(obj.GetComponent<Collider>().bounds.center);
 	}
 	/// <summary>
 	/// Entfernung dieses Objektes zu einem anderem Objekt
@@ -611,7 +611,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	public bool LineOfSight(GameObject obj){
 		RaycastHit hit; //wenn kollision, dann steht hier womit
 		//Ob etwas zwischen den Objekten ist
-		if(Linecast(Pos, obj.collider.bounds.center, out hit, Layer.Level))
+		if(Linecast(Pos, obj.GetComponent<Collider>().bounds.center, out hit, Layer.Level))
 			//ob das getroffene das gewünschte Objekt ist
 			return hit.collider.gameObject == obj;
 		//nichts zwischen den Objekten
@@ -646,7 +646,7 @@ public abstract class GeneralObject : MonoBehaviour, MessageReceiver {
 	/// Der Schadenswert
 	/// </param>
 	public void DoDamage(GameObject other, int damage){
-		Vector3 richtung = (other.collider.bounds.center - Pos);
+		Vector3 richtung = (other.GetComponent<Collider>().bounds.center - Pos);
 		if(richtung.magnitude == 0.0) richtung = Vector3.up;
 
 		Vector3 dmg = richtung.normalized * damage;

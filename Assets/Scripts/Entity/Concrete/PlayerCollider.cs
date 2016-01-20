@@ -68,7 +68,7 @@ public class PlayerCollider : MonoBehaviour {
 			//nur in bestimmten Zeitabständen
 			if(lastPlayerDamage + tickLength < Time.time){
 				//Schaden verursachen
-				Vector3 dmg = (other.collider.bounds.center - collider.bounds.center).normalized * damage;
+				Vector3 dmg = (other.GetComponent<Collider>().bounds.center - GetComponent<Collider>().bounds.center).normalized * damage;
 				other.SendMessage("ApplyDamage", dmg, SendMessageOptions.DontRequireReceiver);
 				//Aktuelle Zeit merken
 				lastPlayerDamage = Time.time;

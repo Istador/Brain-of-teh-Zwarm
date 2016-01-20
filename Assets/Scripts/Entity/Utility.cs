@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public static class Utility {
@@ -152,6 +153,23 @@ public static class Utility {
 	/// </param>
 	public static void MinMax(ref float val, float min, float max){
 		val = System.Math.Max(System.Math.Min(val, max), min);
+	}
+
+
+
+	public static string TimeToString(TimeSpan t){
+		string str = t.Seconds + "s";
+
+		if (t.TotalMinutes >= 1.0) {
+			if (t.Seconds < 10) str = "0" + str;
+			str =  t.Minutes + "m " + str;
+
+			if (t.TotalHours >= 1.0) {
+				if(t.Minutes < 10) str = "0" + str;
+				str =  t.Hours + "h " + str;
+			}
+		}
+		return str; 
 	}
 	
 	

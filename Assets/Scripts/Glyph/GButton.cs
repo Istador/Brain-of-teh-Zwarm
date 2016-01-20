@@ -33,7 +33,24 @@ public class GButton : Glyph {
 
 	public bool Enabled = true;
 
+	public double Size { get; set;}
+
+	public GButton(Glyph g, Action<GButton> action){
+		Size = 1.0;
+		this.action = action;
+
+		id = buttons++;
+		name = "GButton"+id;
+
+		gContent = g;
+		gBorder = new GBordered(gContent);
+		gFill = new GFilled(Color.white, gBorder);
+
+		gBorder.Enabled = false;
+	}
+
 	public GButton(double width, double height, Glyph g, Action<GButton> action){
+		Size = 1.0;
 		this.action = action;
 
 		id = buttons++;
@@ -48,6 +65,7 @@ public class GButton : Glyph {
 	}
 
 	public void Draw(double size, Vector2 pos){
+		double s = size * Size;
 
 		//transparenter Button (zum anklicken)
 		Color tmp = GUI.backgroundColor;
@@ -66,18 +84,18 @@ public class GButton : Glyph {
 			//Rand zeichnen
 			gBorder.Enabled = true;
 			//Zeichnen
-			gFill.Draw(size, pos);
+			gFill.Draw(s, pos);
 			//Rand zukünftig nicht zeichnen
 			gBorder.Enabled = false;
 			//Ausgrauen deaktivieren
 			GUI.color = old;
 		} else if(Enabled){ //Aktiviert
-			gFill.Draw(size, pos);
+			gFill.Draw(s, pos);
 		} else { //Deaktiviert
 			//Transparent zeichnen
 			Color old = GUI.color;
 			GUI.color = new Color(old.r, old.g, old.b, 0.5f);
-			gFill.Draw(size, pos);
+			gFill.Draw(s, pos);
 			GUI.color = old;
 		}
 
@@ -88,8 +106,8 @@ public class GButton : Glyph {
 		}
 	}
 
-	public double Width(double size){ return gFill.Width(size); }
+	public double Width(double size){ return gFill.Width(size * Size); }
 
-	public double Height(double size){ return gFill.Height(size); }
+	public double Height(double size){ return gFill.Height(size * Size); }
 
 }

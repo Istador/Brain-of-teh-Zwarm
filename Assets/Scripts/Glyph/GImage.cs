@@ -6,9 +6,12 @@ public class GImage : Glyph {
 	private Texture2D img;
 
 
+	public double Size { get; set;}
 
-	public GImage(Texture2D img){
+
+	public GImage(Texture2D img, double size = 1.0){
 		this.img = img;
+		Size = size;
 	}
 
 
@@ -22,22 +25,24 @@ public class GImage : Glyph {
 
 	private Dictionary<double, double> widths = new Dictionary<double, double>();
 	public double Width(double size){
-		if(!widths.ContainsKey(size)){
-			double w = ((double)img.width) * size;
-			widths.Add(size, w);
+		double s = size * Size;
+		if(!widths.ContainsKey(s)){
+			double w = ((double)img.width) * s;
+			widths.Add(s, w);
 		}
-		return widths[size];
+		return widths[s];
 	}
 	
 	
 	
 	private Dictionary<double, double> heights = new Dictionary<double, double>();
 	public double Height(double size){
-		if(!heights.ContainsKey(size)){
-			double h = ((double)img.height) * size;
-			heights.Add(size, h);
+		double s = size * Size;
+		if(!heights.ContainsKey(s)){
+			double h = ((double)img.height) * s;
+			heights.Add(s, h);
 		}
-		return heights[size];
+		return heights[s];
 	}
 
 }

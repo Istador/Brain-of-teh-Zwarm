@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Collections.Generic;
 /// fortsetzen, oder das laufende Spiel beenden und zum Hauptmenü zurückkehren
 /// </summary>
 public class Pause : MonoBehaviour {
-
+	
 	double sHeight;
 	double sWidth;
 	double s;
@@ -32,10 +33,20 @@ public class Pause : MonoBehaviour {
 	GButton g_menu = null;
 	Vector2 pos_menu;
 
+	// unpausierte Spielzeit
+	public static TimeSpan Runtime {
+		get { return _runtime.Add(DateTime.Now.Subtract(lastResume)); }
+		private set { _runtime = value; }
+	}
+	private static TimeSpan _runtime;
+	private static DateTime lastResume;
+
 	//bool prellschutz = false;
 
 	void Start(){
-		
+		lastResume = DateTime.Now;
+		Runtime = new TimeSpan();
+
 		//Spiel fortsetzen falls noch pausiert
 		Time.timeScale = 1.0f;
 		paused = false;
@@ -48,7 +59,7 @@ public class Pause : MonoBehaviour {
 			//Nachrichtenwarteschlange leeren
 			MessageDispatcher.I.EmptyQueue();
 			//Hauptmenü laden
-			Application.LoadLevel(0);
+			SceneManager.LoadScene("Levels/MainMenu");
 			//Spiel fortsetzen
 			ResumeGame();
 		};
@@ -109,6 +120,9 @@ public class Pause : MonoBehaviour {
 
 		//Zeit anhalten
 		Time.timeScale = 0.0f;
+
+		//Spielzeit aufaddieren
+		Runtime = Runtime;
 	}
 
 	
@@ -120,6 +134,9 @@ public class Pause : MonoBehaviour {
 				
 		//Zeit weiterlaufen lassen
 		Time.timeScale = 1.0f;
+
+		//Timestamp zurücksetzen für die Spielzeitmessung
+		lastResume = DateTime.Now;
 	}
 
 

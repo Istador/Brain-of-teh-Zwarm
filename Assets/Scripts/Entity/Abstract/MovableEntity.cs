@@ -23,9 +23,9 @@ public abstract class MovableEntity : Entity {
 	public Vector3 Moving {
 		get{
 			//wenn kein Moving angegeben
-			if(_Moving == Vector3.zero && Mathf.Abs(rigidbody.velocity.magnitude) > 0.5f)
+			if(_Moving == Vector3.zero && Mathf.Abs(GetComponent<Rigidbody>().velocity.magnitude) > 0.5f)
 				//ermittel das aus der Geschwindigkeit
-				return Utility.ToHeading(rigidbody.velocity);
+				return Utility.ToHeading(GetComponent<Rigidbody>().velocity);
 			//sonst die Instanzvariable
 			return _Moving;
 		}
@@ -60,8 +60,8 @@ public abstract class MovableEntity : Entity {
 	/// </summary>
 	public void StopMoving(){
 		//anhalten
-		rigidbody.velocity = Vector3.zero;
-		rigidbody.angularVelocity = Vector3.zero;
+		GetComponent<Rigidbody>().velocity = Vector3.zero;
+		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		Steering.Stop();
 		Moving = Vector3.zero;
 	}
@@ -174,11 +174,11 @@ public abstract class MovableEntity : Entity {
 			
 			//Kraft auf die Unity-Physik-Engine übertragen, um Bewegung zu erzeugen
 			//rigidbody.AddRelativeForce(f); //nicht für Projektile
-			rigidbody.AddForce(f, ForceMode.Impulse);
+			GetComponent<Rigidbody>().AddForce(f, ForceMode.Impulse);
 				
 			//Bewegungsgeschwindigkeit limitieren
-			if(Mathf.Abs(rigidbody.velocity.magnitude) > MaxSpeed)
-				rigidbody.velocity = rigidbody.velocity.normalized * MaxSpeed;
+			if(Mathf.Abs(GetComponent<Rigidbody>().velocity.magnitude) > MaxSpeed)
+				GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity.normalized * MaxSpeed;
 		}
 	}
 	

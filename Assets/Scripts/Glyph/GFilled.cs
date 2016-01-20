@@ -25,7 +25,19 @@ public class GFilled : Glyph {
 
 	public void Draw(double size, Vector2 pos){
 		if(Enabled){
-			Rect r = new Rect(pos.x, pos.y, (float)Width(size), (float)Height(size));
+			Rect r;
+			if (g is GBordered) {
+				Position m = (g as GBordered).Margin;
+				r = new Rect(
+					(float)(pos.x + m.left * size),
+					(float)(pos.y + m.top * size),
+					(float)(Width(size) - m.Width * size),
+					(float)(Height(size) - m.Height * size)
+				);
+			}
+			else {
+				r = new Rect(pos.x, pos.y, (float)Width(size), (float)Height(size));
+			}
 			Utility.DrawRectangle(r, color);
 		}
 		g.Draw(size, pos);

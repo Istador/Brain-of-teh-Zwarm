@@ -31,8 +31,8 @@ public class Human : MovableEntity {
 		base.Start();
 
 		//Sprite durch Waffe wählen
-		transform.GetChild(0).renderer.materials = Weapon.Material;
-		sprite = transform.GetChild(0).renderer.material;
+		transform.GetChild(0).GetComponent<Renderer>().materials = Weapon.Material;
+		sprite = transform.GetChild(0).GetComponent<Renderer>().material;
 	}
 	
 	
@@ -43,7 +43,7 @@ public class Human : MovableEntity {
 		Vector2 tmp = sprite.mainTextureScale;
 		
 		//Guckt nach links
-		if( IsLeft(Pos + rigidbody.velocity) )
+		if( IsLeft(Pos + GetComponent<Rigidbody>().velocity) )
 			//Textur nicht vertikal spiegeln
 			tmp = new Vector2( Mathf.Abs(tmp.x), tmp.y);
 		else

@@ -73,7 +73,7 @@ public class SteeringBehaviors {
 	private Vector3 Seek(Vector3 targetPos){
 		Vector3 desiredVelocity = 
 			(targetPos - owner.Pos).normalized * owner.MaxForce;
-		return desiredVelocity - owner.rigidbody.velocity;
+		return desiredVelocity - owner.GetComponent<Rigidbody>().velocity;
 	}
 	
 	/// <summary>
@@ -111,7 +111,7 @@ public class SteeringBehaviors {
 		Vector3 desiredVelocity = 
 			(owner.Pos - targetPos).normalized * owner.MaxForce;
 		
-		return desiredVelocity - owner.rigidbody.velocity;
+		return desiredVelocity - owner.GetComponent<Rigidbody>().velocity;
 	}
 	
 	/// <summary>
@@ -157,7 +157,7 @@ public class SteeringBehaviors {
 			
 			Vector3 DesiredVelocity = ToTarget * speed / dist;
 			
-			return DesiredVelocity - owner.rigidbody.velocity;
+			return DesiredVelocity - owner.GetComponent<Rigidbody>().velocity;
 		}
 		
 		return Vector3.zero;
@@ -185,8 +185,8 @@ public class SteeringBehaviors {
 		}
 		*/
 						
-		float LAT = toEvader.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
-		return Seek(target.Pos + target.rigidbody.velocity * LAT);
+		float LAT = toEvader.magnitude / ( owner.MaxForce + target.GetComponent<Rigidbody>().velocity.magnitude );
+		return Seek(target.Pos + target.GetComponent<Rigidbody>().velocity * LAT);
 	}
 	
 	
@@ -199,8 +199,8 @@ public class SteeringBehaviors {
 	/// </param>
 	private Vector3 Evade(MovableEntity target) {
 		Vector3 toPersuer = target.Pos - owner.Pos;
-		float LAT = toPersuer.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
-		return Flee(target.Pos + target.rigidbody.velocity * LAT);
+		float LAT = toPersuer.magnitude / ( owner.MaxForce + target.GetComponent<Rigidbody>().velocity.magnitude );
+		return Flee(target.Pos + target.GetComponent<Rigidbody>().velocity * LAT);
 	}
 	
 	
@@ -218,7 +218,7 @@ public class SteeringBehaviors {
 		v_WanderTarget = v_WanderTarget.normalized * f_WanderRadius;
 		
 		//Step 3.5 C) Projecting the target in front of the vehicle
-		Vector3 head = owner.rigidbody.velocity.normalized;
+		Vector3 head = owner.GetComponent<Rigidbody>().velocity.normalized;
 		if(head == Vector3.zero) head = new Vector3(1.0f, 0.0f, 0.0f);
 		Vector3 targetLocal = head * f_WanderDistance + v_WanderTarget;
 		
@@ -243,8 +243,8 @@ public class SteeringBehaviors {
 		
 		Vector3 ToOffset = WorldOffset - owner.Pos;
 		
-		float LAT = ToOffset.magnitude / ( owner.MaxForce + target.rigidbody.velocity.magnitude );
-		return Arrive(WorldOffset + target.rigidbody.velocity * LAT);
+		float LAT = ToOffset.magnitude / ( owner.MaxForce + target.GetComponent<Rigidbody>().velocity.magnitude );
+		return Arrive(WorldOffset + target.GetComponent<Rigidbody>().velocity * LAT);
 	}
 
 

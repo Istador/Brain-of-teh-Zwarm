@@ -1,45 +1,40 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Collections.Generic;
 
-//using System.Collections;
-//using System.Reflection;
+public class HighscoresMenu: MonoBehaviour {
 
-public class GameOver: MonoBehaviour {
 
-	public static int Brains = 0;
-	
+
 	double sHeight;
 	double sWidth;
 	double s;
 
+	static double size_title = 0.65;
 	GString g_title;
 	Vector2 pos_title;
-	double size_title = 0.65;
 
-	double size_img = 0.18;
-	GImage g_left;
-	Vector2 pos_left;
-	GImage g_right;
-	Vector2 pos_right;
+	static double size_img = 0.18;
+	GImage g_left, g_right;
+	Vector2 pos_left, pos_right;
 
-	double size_button = 1.5;
+	static double size_button = 1.5;
 	Glyph g_main;
 	Vector2 pos_main;
 
-	double size_text = 0.3;
+
 
 	void Start(){
-
+		
 		Action<GButton> a_menu = (b) => {
-			Brains = 0;
 			//Nachrichtenwarteschlange leeren
 			MessageDispatcher.I.EmptyQueue();
 			//Hauptmenü laden
 			SceneManager.LoadScene("Levels/MainMenu");
 		};
 
-		g_title = GString.GetString("Game Over", size_title);
+		g_title = GString.GetString("Highscores", size_title);
 
 		g_left = new GImage(Resource.Texture["love_left"], size_img);
 		g_right = new GImage(Resource.Texture["love_right"], size_img);
@@ -49,20 +44,33 @@ public class GameOver: MonoBehaviour {
 		g_menu.Padding.all = 10.0;
 		g_menu.Border.all = 4.0;
 
-		//Zeit überlebt
-		TimeSpan rt = Pause.Runtime;
-		Glyph g_alive = GString.GetString("Zeit: "+Utility.TimeToString(rt), size_text);
+		List<Glyph> g_l_times = Highscores.Times;
+		if(g_l_times.Count == 0) { g_l_times.Add(GString.GetString("---", Highscores.size_text)); }
+		g_l_times.Insert(0, GString.GetString("Zeit", 0.4));
+		Glyph g_times = GVConcat.Concat(g_l_times.ToArray())
+			.Align(HorAlignment.center)
+			.Space(30.0)
+		;
 
-		//Anzahl Gehirne
-		Glyph g_brains = GString.GetString(Brains+ (Brains != 1 ? " Brainz erbeutet" : " Brain erbeutet"), size_text);
-
-		g_main = GVConcat.Concat(g_brains, g_alive, g_menu)
+		List<Glyph> g_l_brains = Highscores.Brains;
+		if(g_l_brains.Count == 0) { g_l_brains.Add(GString.GetString("---", Highscores.size_text)); }
+		g_l_brains.Insert(0, GString.GetString("Brainz", 0.4));
+		Glyph g_brains = GVConcat.Concat(g_l_brains.ToArray())
+			.Align(HorAlignment.center)
+			.Space(30.0)
+		;
+		
+		Glyph g_scores = 
+			GConcat.Concat(g_times, g_brains)
+				.Space(100.0)
+				.AutoAlign(HorAlignment.center)
+		;
+		g_main = GVConcat.Concat(g_scores, g_menu)
 			.Align(HorAlignment.center)
 			.Space(40.0)
 		;
-
-		Highscores.Add(Brains, rt);
 	}
+
 
 
 
@@ -81,15 +89,14 @@ public class GameOver: MonoBehaviour {
 
 			pos_left = new Vector2(
 				(float)( 20.0 * s ),
-				(float)(sHeight - 20.0*s - g_left.Height(s))
+				(float)(sHeight - 20.0 * s - g_left.Height(s))
 			);
 
 			pos_right = new Vector2(
-				(float)(sWidth - 20.0*s - g_left.Width(s)),
-				(float)(sHeight - 20.0*s - g_left.Height(s))
-				);
+				(float)(sWidth - 20.0 * s - g_left.Width(s)),
+				(float)(sHeight - 20.0 * s - g_left.Height(s))
+			);
 
-			
 			pos_main = new Vector2(
 				(float)((sWidth - g_main.Width(s)) * 0.5),
 				(float)((sHeight - g_main.Height(s)) * 0.5)
@@ -110,7 +117,7 @@ public class GameOver: MonoBehaviour {
 		g_left.Draw(s, pos_left);
 		g_right.Draw(s, pos_right);
 
-		//Hauptmenü
+		//Main
 		g_main.Draw(s, pos_main);
 	}
 

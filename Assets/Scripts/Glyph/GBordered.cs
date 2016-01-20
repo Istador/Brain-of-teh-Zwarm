@@ -8,7 +8,17 @@ public class Position {
 	public Position(double forall){
 		all = forall;
 	}
-	
+
+	public double vertical {set{
+			top = value;
+			bottom = value;
+		}}
+
+	public double horizontal {set{
+			left = value;
+			right = value;
+		}}
+
 	public double all {set{
 			top = value;
 			bottom = value;
