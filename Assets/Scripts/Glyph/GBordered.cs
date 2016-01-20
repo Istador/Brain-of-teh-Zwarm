@@ -125,6 +125,15 @@ public class GBordered : Glyph {
 		return g.Height(size) + (Margin.Height + Border.Height + Padding.Height) * size;
 	}
 
+	public Rect Inside(double size, Vector2 pos){
+		return new Rect(
+			(float)( pos.x + Margin.left * size ),
+			(float)( pos.y + Margin.top * size ),
+			(float)( g.Width(size) + (Border.Width + Padding.Width) * size ), 
+			(float)( g.Height(size) + (Border.Height + Padding.Height) * size )
+		);
+	}
+
 
 
 }

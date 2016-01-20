@@ -27,13 +27,7 @@ public class GFilled : Glyph {
 		if(Enabled){
 			Rect r;
 			if (g is GBordered) {
-				Position m = (g as GBordered).Margin;
-				r = new Rect(
-					(float)(pos.x + m.left * size),
-					(float)(pos.y + m.top * size),
-					(float)(Width(size) - m.Width * size),
-					(float)(Height(size) - m.Height * size)
-				);
+				r = (g as GBordered).Inside(size, pos);
 			}
 			else {
 				r = new Rect(pos.x, pos.y, (float)Width(size), (float)Height(size));

@@ -71,7 +71,7 @@ public class GButton : Glyph {
 		Color tmp = GUI.backgroundColor;
 		GUI.backgroundColor = Color.clear;
 		bool pressed = GUI.Button(
-			new Rect(pos.x, pos.y, (float)Width(size), (float)Height(size)),
+			gBorder.Inside(s, pos),
 			new GUIContent("", name)
 		);
 		GUI.backgroundColor = tmp;
