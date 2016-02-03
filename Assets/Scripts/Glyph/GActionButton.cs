@@ -53,6 +53,7 @@ public class GActionButton : Glyph, MessageReceiver, IObserver {
 		but = new GButton(200, 200, new GImage(Resource.Texture[icon]), a);
 		but.Enabled = false;
 		but.Filled = false;
+		but.Border.all = 0.0;
 
 		object brains = Observer.I.Add("Brains", this);
 		if(brains != null)
