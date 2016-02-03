@@ -24,6 +24,8 @@ public class MainMenu: GUIMenu {
 		#elif UNITY_WEBPLAYER
 		//Webplayer
 		Application.OpenURL("https://games.blackpinguin.de/BrainOfTehZwarm/play.html");
+		#elif UNITY_WEBGL
+		Application.OpenURL("https://games.blackpinguin.de/BrainOfTehZwarm/play.html");
 		#else
 		//Standalone Build
 		Application.Quit();
@@ -43,12 +45,16 @@ public class MainMenu: GUIMenu {
 		GButton g_credits = create_g_button("Credits", a_credits);
 
 		//Quit nicht im WebPlayer zeigen
-		if(!(Application.isWebPlayer)){
-			GButton g_quit = create_g_button("Spiel beenden", a_quit);
-			_g_main = GVConcat.Concat(g_start, g_highscores, g_credits, g_quit);
-		}
-		else {
-			_g_main = GVConcat.Concat(g_start, g_highscores, g_credits);
+		switch(Application.platform){
+			case RuntimePlatform.OSXWebPlayer:
+			case RuntimePlatform.WebGLPlayer:
+			case RuntimePlatform.WindowsWebPlayer:
+				_g_main = GVConcat.Concat(g_start, g_highscores, g_credits);
+			break;
+			default:
+				GButton g_quit = create_g_button("Spiel beenden", a_quit);
+				_g_main = GVConcat.Concat(g_start, g_highscores, g_credits, g_quit);
+			break;
 		}
 
 		_g_main

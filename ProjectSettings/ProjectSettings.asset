@@ -158,7 +158,7 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/RCL/Eigene Projekte/bms_mg1_botz/user.keystore
+  AndroidKeystoreName: C:/Users/RCL/Eigene Projekte/Unity/bms_mg1_botz/user.keystore
   AndroidKeyaliasName: rcl
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
