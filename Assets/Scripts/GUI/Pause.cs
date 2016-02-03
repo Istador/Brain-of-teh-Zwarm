@@ -11,27 +11,11 @@ using System.Collections.Generic;
 /// Das Spiel wird angehalten, und der Spieler kann entweder das Spiel wieder
 /// fortsetzen, oder das laufende Spiel beenden und zum Hauptmenü zurückkehren
 /// </summary>
-public class Pause : MonoBehaviour {
-	
-	double sHeight;
-	double sWidth;
-	double s;
-	
-	GString g_title;
-	Vector2 pos_title;
-	double size_title = 0.65;
-	
-	double size_img = 0.18;
-	GImage g_left;
-	Vector2 pos_left;
-	GImage g_right;
-	Vector2 pos_right;
-	
-	double size_button = 1.5;
-	GButton g_resume;
-	Vector2 pos_resume;
-	GButton g_menu = null;
-	Vector2 pos_menu;
+public class Pause : GUIMenu {
+
+	private Glyph _g_main;
+	protected override Glyph g_main { get{ return _g_main; } }
+	protected override string str_title { get{ return "Pause"; } }
 
 	// unpausierte Spielzeit
 	public static TimeSpan Runtime {
@@ -43,7 +27,9 @@ public class Pause : MonoBehaviour {
 
 	//bool prellschutz = false;
 
-	void Start(){
+	protected override void Start(){
+		base.Start();
+
 		lastResume = DateTime.Now;
 		Runtime = new TimeSpan();
 
@@ -55,27 +41,13 @@ public class Pause : MonoBehaviour {
 			ResumeGame();
 		};
 
-		Action<GButton> a_menu = (b) => {
-			//Nachrichtenwarteschlange leeren
-			MessageDispatcher.I.EmptyQueue();
-			//Hauptmenü laden
-			SceneManager.LoadScene("Levels/MainMenu");
-			//Spiel fortsetzen
-			ResumeGame();
-		};
+		GButton g_resume = create_g_button("Spiel fortsetzen", a_resume);
+		GButton g_mymenu = create_g_to_menu(null, a_resume);
 
-		g_title = GString.GetString("Pause");
-		
-		g_left = new GImage(Resource.Texture["love_left"]);
-		g_right = new GImage(Resource.Texture["love_right"]);
-		
-		g_resume = new GButton(250, 40, GString.GetString("Spiel fortsetzen"), a_resume);
-		g_resume.Padding.all = 10.0;
-		g_resume.Border.all = 4.0;
-
-		g_menu = new GButton(250, 40, GString.GetString("Zum Hauptmenü"), a_menu);
-		g_menu.Padding.all = 10.0;
-		g_menu.Border.all = 4.0;
+		_g_main = GVConcat.Concat(g_resume, g_mymenu)
+			.Align(HorAlignment.center)
+			.Space(40.0)
+		;
 
 		Inputs.I.Register("Pause", ()=>{
 			//prüfen ob das Spiel pausiert
@@ -84,24 +56,6 @@ public class Pause : MonoBehaviour {
 		    else ResumeGame();
 		});
 	}
-
-
-	/*
-	void Update() {
-		if(Input.GetButton("Pause")){
-			if(!prellschutz){
-				prellschutz = true;
-				//prüfen ob das Spiel pausiert
-				if(!paused) PauseGame();
-				//oder fortgesetzt werden soll
-				else ResumeGame();
-			}
-		} else {
-			prellschutz = false;
-		}
-	}
-	*/
-	
 	
 	
 	/// <summary>
@@ -140,67 +94,12 @@ public class Pause : MonoBehaviour {
 	}
 
 
-
-	void Resize(){
-		if(sWidth != Screen.width || sHeight != Screen.height){
-			sWidth = Screen.width;
-			sHeight = Screen.height;
-			
-			double aspect = (sWidth / sHeight) / (1680/1050);
-			s = (sHeight / 1050) * aspect;
-			
-			pos_title = new Vector2(
-				(float)((sWidth - g_title.Width(size_title * s))/2.0),
-				(float)( 100.0 * s )
-				);
-			
-			pos_left = new Vector2(
-				(float)( 20.0 * s ),
-				(float)(sHeight - 20.0*s - g_left.Height(size_img * s))
-				);
-			
-			pos_right = new Vector2(
-				(float)(sWidth - 20.0*s - g_left.Width(size_img * s)),
-				(float)(sHeight - 20.0*s - g_left.Height(size_img * s))
-				);
-
-			double height = g_resume.Height(size_button * s);
-			pos_resume = new Vector2(
-				(float)((sWidth - g_resume.Width(size_button * s))/2.0),
-				(float)((sHeight - height)/2.0)
-				);
-
-			pos_menu = new Vector2(
-				(float)((sWidth - g_menu.Width(size_button * s))/2.0),
-				(float)((sHeight + height)/2.0 + 20.0*s)
-			);
-		}
-		
-	}
-
-
-	
-	
 	//GUI zeichnen
-	void OnGUI(){
+	protected override void OnGUI(){
 		//nur wenn das Spiel pausiert wurde den Pausen-Bildschirm zeichnen
-		if(paused){ //draw
+		if (paused) { //draw
 			Utility.DrawRectangle(new Rect( 0, 0, Screen.width, Screen.height), Color.white);
-
-			Resize();
-
-			//Pause
-			g_title.Draw(size_title * s, pos_title);
-			
-			//Bilder
-			g_left.Draw(size_img * s, pos_left);
-			g_right.Draw(size_img * s, pos_right);
-			
-			//Spiel fortsetzen
-			g_resume.Draw(size_button * s, pos_resume);
-			
-			//Hauptmenü
-			g_menu.Draw(size_button * s, pos_menu);
+			base.OnGUI();
 		}
 	}
 	

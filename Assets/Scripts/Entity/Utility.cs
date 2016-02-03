@@ -157,6 +157,24 @@ public static class Utility {
 
 
 
+	/// <summary>
+	/// Beschränkt einen Wert auf einen bestimmten Wertebereich
+	/// </summary>
+	/// <param name='val'>
+	/// Wert der eingegrenzt wird
+	/// </param>
+	/// <param name='min'>
+	/// Minimaler Wert
+	/// </param>
+	/// <param name='max'>
+	/// Maximaler Wert
+	/// </param>
+	public static void MinMax(ref double val, double min, double max){
+		val = System.Math.Max(System.Math.Min(val, max), min);
+	}
+
+
+
 	public static string TimeToString(TimeSpan t){
 		string str = t.Seconds + "s";
 

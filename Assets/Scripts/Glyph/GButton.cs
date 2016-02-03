@@ -57,7 +57,7 @@ public class GButton : Glyph {
 		name = "GButton"+id;
 
 		gContent = g;
-		gLimit = new GLimited(width, height, gContent);
+		gLimit = new GLimited(gContent, width, height);
 		gBorder = new GBordered(gLimit);
 		gFill = new GFilled(Color.white, gBorder);
 

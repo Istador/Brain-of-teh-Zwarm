@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class Highscores {
 
-	public static double size_text = 0.3;
-
 	private class Score{
 		public int brains;
 		public TimeSpan time;
@@ -16,8 +14,8 @@ public class Highscores {
 
 		public static System.Converter<Score, Glyph> toGlyph = s => {
 			return GVConcat.Concat(
-				GString.GetString(s.brains+ (s.brains != 1 ? " Brainz" : " Brain"), size_text)
-				, GString.GetString(Utility.TimeToString(s.time), size_text)
+				GString.GetString(s.brains+ (s.brains != 1 ? " Brainz" : " Brain"), GUIMenu.size_text)
+				, GString.GetString(Utility.TimeToString(s.time), GUIMenu.size_text)
 			).Align(HorAlignment.center);
 		};
 		
