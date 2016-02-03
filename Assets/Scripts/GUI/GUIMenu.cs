@@ -91,6 +91,8 @@ public abstract class GUIMenu : MonoBehaviour {
 			s = (sHeight / 1050) * aspect;
 			//Utility.MinMax(ref s, 0.6, 0.9);
 
+			double sa = s / aspect;
+
 			//Debug.Log(s);
 
 			g_title.maxWidth = Screen.width;
@@ -98,11 +100,11 @@ public abstract class GUIMenu : MonoBehaviour {
 
 			pos_title = new Vector2(
 				(float)((sWidth - g_title.Width(s)) * 0.5),
-				(float)( 80.0 * s / aspect )
+				(float)( 80.0 * sa )
 			);
 
-			double y = pos_title.y + g_title.Height(s) + 40.0 * s;
-			double h = sHeight - y;
+			double y = pos_title.y + g_title.Height(s) + 20.0 * sa;
+			double h = sHeight - y - 20.0 * sa;
 
 			g_left.maxHeight = h;
 			g_left.maxWidth = sWidth * 0.2;
@@ -111,15 +113,15 @@ public abstract class GUIMenu : MonoBehaviour {
 
 			pos_left = new Vector2(
 				(float)( 20.0 * s ),
-				(float)(sHeight - 20.0 * s / aspect - g_left.Height(s))
+				(float)(sHeight - 20.0 * sa - g_left.Height(s))
 			);
 
 			pos_right = new Vector2(
 				(float)(sWidth - 20.0 * s - g_right.Width(s)),
-				(float)(sHeight - 20.0 * s / aspect - g_right.Height(s))
+				(float)(sHeight - 20.0 * sa - g_right.Height(s))
 			);
 
-			g_content.maxHeight = h;
+			g_content.maxHeight = h - 20.0 * sa;
 			g_content.maxWidth = sWidth;
 
 			if (y + Math.Max(0.0, (sHeight - y - g_content.Height(s)) * 0.5) + g_content.Height(s) >= pos_left.y) {
