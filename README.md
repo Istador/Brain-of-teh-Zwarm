@@ -15,7 +15,7 @@ Because the Unity game engine was used, Brain of teh Zwarm can be played directl
 |                  |                      |
 | ---------------- | -------------------- |
 | __Languages__    | C#                   |
-| __Technologies__ | Photoshop, MediaWiki |
+| __Tools__        | Photoshop, MediaWiki |
 | __IDE__          | Unity, MonoDevelop   |
 | __Participants__ | 1                    |
 
@@ -42,7 +42,7 @@ Verwendet wurde die Unity Spiel-Engine, weshalb Brain of teh Zwarm auf [dieser W
 |                  |                      |
 | ---------------- | -------------------- |
 | __Sprachen__     | C#                   |
-| __Technologien__ | Photoshop, MediaWiki |
+| __Tools__        | Photoshop, MediaWiki |
 | __IDE__          | Unity, MonoDevelop   |
 | __Beteiligte__   | 1                    |
 
